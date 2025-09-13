@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos Online - AprendiendoSalsa</title>
+    <!-- Incluimos Tailwind CSS para un diseño moderno y rápido -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Incluimos la fuente Inter de Google Fonts para una tipografía elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo base para usar la fuente Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Pequeña animación para las tarjetas de curso */
+        .curso-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Encabezado de la página -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-3xl font-bold text-red-600">AprendiendoSalsa</h1>
+            <p class="text-gray-600">Tu escuela de baile online y presencial</p>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container mx-auto px-6 py-12">
+        <section id="cursos-online">
+            <h2 class="text-4xl font-bold text-center mb-2">Nuestros Cursos Online</h2>
+            <p class="text-lg text-gray-600 text-center mb-10">Aprende a tu ritmo, donde y cuando quieras.</p>
+
+            <!-- 
+              Esta es la "zona de aterrizaje" para nuestros cursos.
+              El JavaScript buscará este 'div' y meterá las tarjetas de los cursos aquí dentro.
+            -->
+            <div id="cursos-contenedor" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Estado de Carga: Se mostrará mientras se cargan los datos -->
+                <p id="loading-indicator" class="text-center col-span-full">Cargando cursos...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center text-gray-600">
+            <p>&copy; 2025 AprendiendoSalsa. Todos los derechos reservados.</p>
+            <!-- Aquí podríamos añadir enlaces a redes sociales en el futuro -->
+        </div>
+    </footer>
+
+    <!-- ======================================================================= -->
+    <!-- === LA MAGIA (JavaScript) === -->
+    <!-- ======================================================================= -->
+    <script>
+        // La dirección de nuestra "cocina" en Render
+        const API_URL = "https://stripe-backend-apprendiendo.onrender.com/api/cursos";
+
+        // Esta función se ejecuta en cuanto la página termina de cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCursos();
+        });
+
+        // Función que habla con nuestro backend para pedir la lista de cursos
+        async function fetchCursos() {
+            const contenedor = document.getElementById('cursos-contenedor');
+            const loadingIndicator = document.getElementById('loading-indicator');
+
+            try {
+                // 1. Hacemos la llamada a nuestra API
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Error de red: ${response.statusText}`);
+                }
+                const cursos = await response.json();
+
+                // 2. Si todo va bien, limpiamos el contenedor y el mensaje de "cargando"
+                contenedor.innerHTML = ''; 
+
+                // 3. "Dibujamos" una tarjeta por cada curso que recibimos
+                cursos.forEach(curso => {
+                    const cursoCardHTML = crearTarjetaCurso(curso);
+                    contenedor.innerHTML += cursoCardHTML;
+                });
+
+            } catch (error) {
+                console.error("Error al cargar los cursos:", error);
+                // Si algo falla, mostramos un mensaje de error
+                loadingIndicator.style.display = 'none'; // Ocultamos el indicador de carga
+                contenedor.innerHTML = `<p class="text-center col-span-full text-red-500">Lo sentimos, no se pudieron cargar los cursos en este momento. Inténtalo de nuevo más tarde.</p>`;
+            }
+        }
+
+        // Función que construye el HTML para una sola tarjeta de curso
+        function crearTarjetaCurso(curso) {
+            
+            // Lógica para mostrar el precio: si hay oferta, muestra el precio tachado
+            let precioHTML = `<span class="text-2xl font-bold text-gray-900">${curso.precio.toFixed(2)}€</span>`;
+            if (curso.precio_oferta) {
+                precioHTML = `
+                    <span class="text-2xl font-bold text-red-600">${curso.precio_oferta.toFixed(2)}€</span>
+                    <span class="text-lg line-through text-gray-500 ml-2">${curso.precio.toFixed(2)}€</span>
+                `;
+            }
+
+            // Usamos "template literals" de JavaScript para construir el HTML de forma limpia
+            return `
+                <div class="curso-card bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300">
+                    <!-- Imagen de Portada -->
+                    <img src="${curso.url_imagen_portada}" alt="Imagen del curso ${curso.titulo}" class="w-full h-48 object-cover">
+                    
+                    <div class="p-6 flex flex-col flex-grow">
+                        <!-- Nivel y Categoría -->
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">${curso.nivel}</span>
+                            <span class="inline-block bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">${curso.categoria}</span>
+                        </div>
+                        
+                        <!-- Título y Subtítulo -->
+                        <h3 class="text-xl font-bold mb-1">${curso.titulo}</h3>
+                        <p class="text-sm text-gray-500 mb-3">${curso.subtitulo}</p>
+                        
+                        <!-- Descripción -->
+                        <p class="text-gray-700 text-base flex-grow">${curso.descripcion_corta}</p>
+                        
+                        <!-- Precio y Botón -->
+                        <div class="mt-6 flex justify-between items-center">
+                            <div class="flex items-baseline">
+                                ${precioHTML}
+                            </div>
+                            <a href="#" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors duration-300">
+                                Ver Curso
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+    </script>
+
+</body>
+</html>
