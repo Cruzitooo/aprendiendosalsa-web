@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- El título se cambiará dinámicamente con JavaScript -->
+    <title>Cargando curso... - ApprendiendoSalsa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Encabezado de la página (con enlaces de navegación) -->
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-red-600"><a href="index.html">ApprendiendoSalsa</a></h1>
+                <p class="text-gray-600">Tu escuela de baile online y presencial</p>
+            </div>
+            <nav>
+                <a href="index.html" class="text-gray-600 hover:text-red-600 px-3 py-2">Cursos Online</a>
+                <a href="sobre-mi.html" class="text-gray-600 hover:text-red-600 px-3 py-2">Sobre Mí</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <!-- Este 'div' es el contenedor que llenaremos con los datos del curso -->
+    <main id="detalle-curso-contenedor" class="container mx-auto px-6 py-12">
+        <p>Cargando detalles del curso...</p>
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center text-gray-600">
+            <p>&copy; 2025 ApprendiendoSalsa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript para cargar los detalles del curso -->
+    <script>
+        // La dirección base de nuestra "cocina" en Render
+        const API_URL = "https://stripe-backend-apprendiendo.onrender.com/api/cursos";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Obtenemos el ID del curso de la URL (ej. ?id=1)
+            const params = new URLSearchParams(window.location.search);
+            const cursoId = params.get('id');
+
+            if (cursoId) {
+                fetchDetalleCurso(cursoId);
+            } else {
+                mostrarError("No se ha especificado un curso.");
+            }
+        });
+
+        async function fetchDetalleCurso(id) {
+            const contenedor = document.getElementById('detalle-curso-contenedor');
+            try {
+                // 2. Pedimos a la cocina los detalles de ESE curso en concreto
+                const response = await fetch(`${API_URL}/${id}`);
+                if (!response.ok) throw new Error('Curso no encontrado');
+                const curso = await response.json();
+
+                // 3. "Dibujamos" la página con los datos recibidos
+                document.title = `${curso.titulo} - ApprendiendoSalsa`; // Actualizamos el título de la pestaña
+                contenedor.innerHTML = renderDetalleCurso(curso);
+
+            } catch (error) {
+                console.error("Error al cargar el detalle del curso:", error);
+                mostrarError("Lo sentimos, no hemos podido encontrar el curso que buscas.");
+            }
+        }
+
+        function mostrarError(mensaje) {
+            const contenedor = document.getElementById('detalle-curso-contenedor');
+            contenedor.innerHTML = `<p class="text-center text-red-500 text-2xl">${mensaje}</p>`;
+        }
+        
+        // Esta función construye todo el HTML de la página de detalle
+        function renderDetalleCurso(curso) {
+             let precioHTML = `<span class="text-4xl font-bold text-gray-900">${curso.precio.toFixed(2)}€</span>`;
+            if (curso.precio_oferta) {
+                precioHTML = `
+                    <span class="text-4xl font-bold text-red-600">${curso.precio_oferta.toFixed(2)}€</span>
+                    <span class="text-2xl line-through text-gray-500 ml-2">${curso.precio.toFixed(2)}€</span>
+                `;
+            }
+
+            return `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <!-- Columna Izquierda: Información Principal -->
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <span class="inline-block bg-red-100 text-red-800 text-lg font-semibold px-4 py-1 rounded-full">${curso.nivel}</span>
+                            <span class="inline-block bg-gray-100 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full">${curso.categoria}</span>
+                        </div>
+                        <h2 class="text-5xl font-bold mb-2">${curso.titulo}</h2>
+                        <p class="text-2xl text-gray-600 mb-8">${curso.subtitulo}</p>
+                        
+                        <!-- Aquí iría el vídeo de presentación -->
+                        <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg mb-8 text-white flex items-center justify-center">
+                            <p>(Vídeo de Presentación del Curso)</p>
+                        </div>
+
+                        <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-4">Descripción del Curso</h3>
+                        <div class="text-gray-700 space-y-4 leading-relaxed">
+                            <!-- Aquí podrías usar la descripción larga -->
+                            <p>${curso.descripcion_corta}</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                        
+                        <!-- Aquí iría la lista de módulos -->
+                        <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-4 mt-10">Contenido del Curso</h3>
+                        <p class="text-gray-700">Aquí se mostrará la lista de módulos y lecciones...</p>
+                    </div>
+
+                    <!-- Columna Derecha: Tarjeta de Compra -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-lg shadow-lg p-6 sticky top-28">
+                            <img src="${curso.url_imagen_portada}" alt="Imagen del curso ${curso.titulo}" class="w-full h-48 object-cover rounded-md mb-4">
+                            <div class="mb-6">
+                                ${precioHTML}
+                            </div>
+                            <button class="w-full bg-red-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors duration-300">
+                                Comprar Ahora
+                            </button>
+                            <ul class="text-gray-600 mt-6 space-y-2 text-sm">
+                                <li>✓ Acceso de por vida</li>
+                                <li>✓ Aprende desde cualquier dispositivo</li>
+                                <li>✓ Certificado de finalización (próximamente)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+    </script>
+
+</body>
+</html>
