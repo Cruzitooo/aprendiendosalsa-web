@@ -4,147 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cursos Online - ApprendiendoSalsa</title>
-    <!-- Incluimos Tailwind CSS para un diseño moderno y rápido -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Incluimos la fuente Inter de Google Fonts para una tipografía elegante -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+      // 2. Paleta de Colores Corporativa integrada en Tailwind
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-red': '#9B2326',      // Rojo Pasión
+              'brand-dark': '#1C1C1C',     // Negro Carbón
+              'brand-white': '#FFFFFF',    // Blanco Lienzo
+            },
+            fontFamily: {
+              'sans': ['Inter', 'sans-serif'],
+              'display': ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
     <style>
-        /* Estilo base para usar la fuente Inter */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Pequeña animación para las tarjetas de curso */
-        .curso-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+      /* Pequeña animación para las tarjetas de curso */
+      .curso-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-brand-white text-brand-dark">
 
-    <!-- ======================================================================= -->
-    <!-- === INICIO DE LA MODIFICACIÓN --- -->
-    <!-- ======================================================================= -->
-    <!-- Encabezado de la página (AHORA CON MENÚ DE NAVEGACIÓN) -->
-    <header class="bg-white shadow-md sticky top-0 z-10">
+    <header class="bg-brand-white shadow-sm sticky top-0 z-20">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold text-red-600">
-                    <a href="index.html">ApprendiendoSalsa</a>
-                </h1>
-                <p class="text-gray-600">Tu escuela de baile online y presencial</p>
-            </div>
-            <nav>
-                <a href="index.html" class="text-red-600 font-semibold px-3 py-2">Cursos Online</a>
-                <a href="sobre-mi.html" class="text-gray-600 hover:text-red-600 px-3 py-2">Sobre Mí</a>
-                <!-- Aquí añadiremos más enlaces en el futuro -->
+            <a href="index.html" class="flex items-center">
+                <img src="Logo Aprendiendosalsa 2.png" alt="Logo de ApprendiendoSalsa" class="h-14"> 
+            </a>
+            <nav class="font-semibold text-lg space-x-6">
+                <a href="index.html" class="text-brand-red border-b-2 border-brand-red pb-1">Cursos</a>
+                <a href="sobre-mi.html" class="text-brand-dark hover:text-brand-red transition-colors">Sobre Mí</a>
+                <a href="#" class="text-brand-dark hover:text-brand-red transition-colors">Blog</a>
+                <a href="#" class="text-brand-dark hover:text-brand-red transition-colors">Contacto</a>
             </nav>
         </div>
     </header>
-    <!-- ======================================================================= -->
-    <!-- === FIN DE LA MODIFICACIÓN --- -->
-    <!-- ======================================================================= -->
 
-
-    <!-- Contenido Principal (SIN CAMBIOS) -->
-    <main class="container mx-auto px-6 py-12">
+    <main class="container mx-auto px-6 py-16">
         <section id="cursos-online">
-            <h2 class="text-4xl font-bold text-center mb-2">Nuestros Cursos Online</h2>
-            <p class="text-lg text-gray-600 text-center mb-10">Aprende a tu ritmo, donde y cuando quieras.</p>
+            <h1 class="font-display text-5xl font-bold text-center mb-4">Cursos de Salsa Online</h1>
+            <p class="text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">Aprende a tu ritmo con un método paso a paso, diseñado para llevarte desde cero hasta la pista de baile.</p>
 
             <div id="cursos-contenedor" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Estado de Carga: Se mostrará mientras se cargan los datos -->
-                <p id="loading-indicator" class="text-center col-span-full">Cargando cursos...</p>
+                <p id="loading-indicator" class="text-center col-span-full text-lg">Cargando cursos...</p>
             </div>
         </section>
     </main>
 
-    <!-- Pie de Página (SIN CAMBIOS) -->
-    <footer class="bg-white mt-12 py-6">
+    <footer class="bg-gray-50 mt-16 py-10 border-t">
         <div class="container mx-auto px-6 text-center text-gray-600">
-            <p>&copy; 2025 ApprendiendoSalsa. Todos los derechos reservados.</p>
+            <p class="font-semibold text-lg mb-2">ApprendiendoSalsa</p>
+            <p>&copy; 2025 Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <!-- JavaScript (SIN CAMBIOS) -->
     <script>
-        // La dirección de nuestra "cocina" en Render
         const API_URL = "https://stripe-backend-apprendiendo.onrender.com/api/cursos";
 
-        // Esta función se ejecuta en cuanto la página termina de cargar
         document.addEventListener('DOMContentLoaded', () => {
             fetchCursos();
         });
 
-        // Función que habla con nuestro backend para pedir la lista de cursos
         async function fetchCursos() {
             const contenedor = document.getElementById('cursos-contenedor');
             const loadingIndicator = document.getElementById('loading-indicator');
 
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) {
-                    throw new Error(`Error de red: ${response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`Error de red`);
                 const cursos = await response.json();
+                
+                // Filtramos para mostrar solo los publicados
+                const cursosPublicados = cursos.filter(curso => curso.publicado);
 
                 contenedor.innerHTML = ''; 
 
-                cursos.forEach(curso => {
-                    const cursoCardHTML = crearTarjetaCurso(curso);
-                    contenedor.innerHTML += cursoCardHTML;
+                if (cursosPublicados.length === 0) {
+                     contenedor.innerHTML = `<p class="text-center col-span-full text-gray-500">Próximamente nuevos cursos disponibles.</p>`;
+                     return;
+                }
+
+                cursosPublicados.forEach(curso => {
+                    contenedor.innerHTML += crearTarjetaCurso(curso);
                 });
 
             } catch (error) {
                 console.error("Error al cargar los cursos:", error);
                 loadingIndicator.style.display = 'none';
-                contenedor.innerHTML = `<p class="text-center col-span-full text-red-500">Lo sentimos, no se pudieron cargar los cursos en este momento. Inténtalo de nuevo más tarde.</p>`;
+                contenedor.innerHTML = `<p class="text-center col-span-full text-brand-red">Lo sentimos, no se pudieron cargar los cursos.</p>`;
             }
         }
 
-        // Función que construye el HTML para una sola tarjeta de curso
         function crearTarjetaCurso(curso) {
-            
-            let precioHTML = `<span class="text-2xl font-bold text-gray-900">${curso.precio.toFixed(2)}€</span>`;
-            if (curso.precio_oferta) {
-                precioHTML = `
-                    <span class="text-2xl font-bold text-red-600">${curso.precio_oferta.toFixed(2)}€</span>
-                    <span class="text-lg line-through text-gray-500 ml-2">${curso.precio.toFixed(2)}€</span>
-                `;
-            }
+            // Usamos los campos de la nueva base de datos
+            const imagenURL = curso.url_imagen_portada || 'https://via.placeholder.com/400x200.png?text=AprendiendoSalsa';
 
             return `
-                <div class="curso-card bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300">
-                    <img src="${curso.url_imagen_portada}" alt="Imagen del curso ${curso.titulo}" class="w-full h-48 object-cover">
+                <div class="curso-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border">
+                    <img src="${imagenURL}" alt="Imagen del curso ${curso.titulo}" class="w-full h-56 object-cover">
                     
                     <div class="p-6 flex flex-col flex-grow">
-                        <div class="flex items-center space-x-2 mb-2">
-                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">${curso.nivel}</span>
-                            <span class="inline-block bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">${curso.categoria}</span>
-                        </div>
+                        <span class="inline-block bg-red-100 text-brand-red text-sm font-semibold px-3 py-1 rounded-full mb-3 self-start">${curso.nivel}</span>
                         
-                        <h3 class="text-xl font-bold mb-1">${curso.titulo}</h3>
-                        <p class="text-sm text-gray-500 mb-3">${curso.subtitulo}</p>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-brand-dark">${curso.titulo}</h3>
+                        <p class="text-gray-600 text-base flex-grow mb-4">${curso.descripcion_corta}</p>
                         
-                        <p class="text-gray-700 text-base flex-grow">${curso.descripcion_corta}</p>
-                        
-                        <div class="mt-6 flex justify-between items-center">
-                            <div class="flex items-baseline">
-                                ${precioHTML}
-                            </div>
-                            <a href="curso-detalle.html?id=${curso.id}" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors duration-300">
-                                Ver Curso
+                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                            <span class="text-3xl font-bold text-brand-dark">${curso.precio.toFixed(2)}€</span>
+                            <a href="curso-detalle.html?id=${curso.id}" class="bg-brand-red text-white font-bold py-2 px-5 rounded-lg hover:bg-opacity-90 transition-colors duration-300">
+                                Ver Detalles
                             </a>
                         </div>
                     </div>
                 </div>
             `;
         }
-
     </script>
 
 </body>
 </html>
-
