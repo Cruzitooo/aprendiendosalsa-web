@@ -43,7 +43,7 @@
     <header class="bg-brand-white shadow-sm sticky top-0 z-20">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="flex items-center">
-                <img src="Logo Aprendiendosalsa 2.png" alt="Logo de ApprendiendoSalsa" class="h-14"> 
+                <img src="images/logo-aprendiendo-salsa.png" alt="Logo de AprendiendoSalsa" class="h-14"> 
             </a>
 
             <nav class="hidden md:flex font-semibold text-lg space-x-6 items-center">
@@ -69,7 +69,7 @@
     </header>
 
     <main>
-        <section class="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white" style="background-image: url('https://images.pexels.com/photos/2791055/pexels-photo-2791055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); background-size: cover; background-position: center;">
+        <section class="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white bg-cover bg-center" style="background-image: url('URL_DE_TU_FOTO_AQUI');">
             <div class="absolute inset-0 bg-brand-dark opacity-60"></div>
             <div class="relative z-10 px-6">
                 <h1 class="font-display text-5xl md:text-7xl font-extrabold leading-tight">Aprende a Bailar Salsa Online</h1>
@@ -128,7 +128,6 @@
                     return;
                 }
                 
-                // Aquí estaba el error. La llamada ya es correcta.
                 cursosPublicados.forEach(curso => {
                     contenedor.innerHTML += crearTarjetaCurso(curso); 
                 });
@@ -144,11 +143,12 @@
         
         // --- Función para crear cada tarjeta de curso ---
         function crearTarjetaCurso(curso) {
+            // CAMBIO: Nombre de marca corregido en el placeholder
             const imagenURL = curso.url_imagen_portada || 'https://via.placeholder.com/400x200.png?text=AprendiendoSalsa';
             return `
                 <div class="curso-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border">
                    <img src="${imagenURL}" alt="Imagen del curso ${curso.titulo}" class="w-full h-56 object-cover">
-                    
+                   
                     <div class="p-6 flex flex-col flex-grow">
                         <span class="inline-block bg-red-100 text-brand-red text-sm font-semibold px-3 py-1 rounded-full mb-3 self-start">${curso.nivel}</span>
                         <h3 class="font-display text-2xl font-bold mb-2 text-brand-dark">${curso.titulo}</h3>
