@@ -33,7 +33,6 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       }
-      /* Para el efecto de scroll suave */
       html {
         scroll-behavior: smooth;
       }
@@ -70,9 +69,6 @@
     </header>
 
     <main>
-        <!-- ====================================================== -->
-        <!-- === NUEVA SECCIÓN DE BIENVENIDA (HERO SECTION) === -->
-        <!-- ====================================================== -->
         <section class="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white" style="background-image: url('https://images.pexels.com/photos/2791055/pexels-photo-2791055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); background-size: cover; background-position: center;">
             <div class="absolute inset-0 bg-brand-dark opacity-60"></div>
             <div class="relative z-10 px-6">
@@ -84,9 +80,6 @@
             </div>
         </section>
 
-        <!-- ====================================================== -->
-        <!-- === SECCIÓN DE CURSOS (ANTES ERA TODA LA PÁGINA) === -->
-        <!-- ====================================================== -->
         <section id="cursos-online" class="container mx-auto px-6 py-20">
             <h2 class="font-display text-4xl font-bold text-center mb-4">Nuestros Cursos Online</h2>
             <p class="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">Diseñados para que aprendas a tu ritmo, donde y cuando quieras.</p>
@@ -131,6 +124,7 @@
                      return;
                 }
                 cursosPublicados.forEach(curso => {
+                    // Esta línea ahora encontrará la función que faltaba
                     contenedor.innerHTML += crearTarjetaCurso(curso);
                 });
             } catch (error) {
@@ -140,11 +134,15 @@
             }
         }
         
+        // ======================================================
+        // === FUNCIÓN RESTAURADA --- LA RECETA QUE FALTABA ===
+        // ======================================================
         function crearTarjetaCurso(curso) {
             const imagenURL = curso.url_imagen_portada || 'https://via.placeholder.com/400x200.png?text=AprendiendoSalsa';
             return `
                 <div class="curso-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 border">
                     <img src="${imagenURL}" alt="Imagen del curso ${curso.titulo}" class="w-full h-56 object-cover">
+                    
                     <div class="p-6 flex flex-col flex-grow">
                         <span class="inline-block bg-red-100 text-brand-red text-sm font-semibold px-3 py-1 rounded-full mb-3 self-start">${curso.nivel}</span>
                         <h3 class="font-display text-2xl font-bold mb-2 text-brand-dark">${curso.titulo}</h3>
