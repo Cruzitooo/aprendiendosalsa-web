@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ApprendiendoSalsa - Tu Escuela de Baile Online</title>
+    <title>AprendiendoSalsa - Tu Escuela de Baile Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,7 +91,7 @@
 
     <footer class="bg-gray-50 mt-16 py-10 border-t">
         <div class="container mx-auto px-6 text-center text-gray-600">
-            <p class="font-semibold text-lg mb-2">ApprendiendoSalsa</p>
+            <p class="font-semibold text-lg mb-2">AprendiendoSalsa</p>
             <p>&copy; 2025 Todos los derechos reservados.</p>
         </div>
     </footer>
@@ -99,13 +99,14 @@
     <script>
         const API_URL = "https://stripe-backend-apprendiendo.onrender.com/api/cursos";
 
+        // --- Lógica del menú móvil ---
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
         
+        // --- Lógica para cargar los cursos ---
         document.addEventListener('DOMContentLoaded', () => {
             fetchCursos();
         });
@@ -116,27 +117,32 @@
             try {
                 const response = await fetch(API_URL);
                 if (!response.ok) throw new Error(`Error de red`);
+                
                 const cursos = await response.json();
                 const cursosPublicados = cursos.filter(curso => curso.publicado);
+                
                 contenedor.innerHTML = ''; 
+                
                 if (cursosPublicados.length === 0) {
-                     contenedor.innerHTML = `<p class="text-center col-span-full text-gray-500">Próximamente nuevos cursos disponibles.</p>`;
-                     return;
+                    contenedor.innerHTML = `<p class="text-center col-span-full text-gray-500">Próximamente nuevos cursos disponibles.</p>`;
+                    return;
                 }
+                
+                // Aquí estaba el error. La llamada ya es correcta.
                 cursosPublicados.forEach(curso => {
-                    // Esta línea ahora encontrará la función que faltaba
-                    contenedor.innerHTML += crearTarjetaCurso(curso);
+                    contenedor.innerHTML += crearTarjetaCurso(curso); 
                 });
+
             } catch (error) {
                 console.error("Error al cargar los cursos:", error);
-                loadingIndicator.style.display = 'none';
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
                 contenedor.innerHTML = `<p class="text-center col-span-full text-brand-red">Lo sentimos, no se pudieron cargar los cursos.</p>`;
             }
         }
         
-        // ======================================================
-        // === FUNCIÓN RESTAURADA --- LA RECETA QUE FALTABA ===
-        // ======================================================
+        // --- Función para crear cada tarjeta de curso ---
         function crearTarjetaCurso(curso) {
             const imagenURL = curso.url_imagen_portada || 'https://via.placeholder.com/400x200.png?text=AprendiendoSalsa';
             return `
@@ -160,4 +166,3 @@
     </script>
 </body>
 </html>
-
