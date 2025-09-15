@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- El título se cambiará dinámicamente con JavaScript -->
     <title>Cargando curso... - ApprendiendoSalsa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,44 +10,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Estilos para el menú de hamburguesa */
+        #menu-button:focus ~ #mobile-menu, #mobile-menu:hover { display: block; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Encabezado de la página (con enlaces de navegación) -->
-    <header class="bg-white shadow-md sticky top-0 z-10">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold text-red-600"><a href="index.html">ApprendiendoSalsa</a></h1>
-                <p class="text-gray-600">Tu escuela de baile online y presencial</p>
+    <header class="bg-white shadow-md sticky top-0 z-20">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-red-600"><a href="index.html">ApprendiendoSalsa</a></h1>
+                    <p class="text-sm text-gray-500 hidden sm:block">Tu escuela de baile online y presencial</p>
+                </div>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="index.html" class="text-gray-600 hover:text-red-600 px-3 py-2 text-lg">Cursos Online</a>
+                    <a href="sobre-mi.html" class="text-gray-600 hover:text-red-600 px-3 py-2 text-lg">Sobre Mí</a>
+                </nav>
+                <div class="md:hidden relative">
+                    <button id="menu-button" class="text-gray-600 hover:text-red-600 focus:outline-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                    <div id="mobile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-30">
+                        <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50">Cursos Online</a>
+                        <a href="sobre-mi.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50">Sobre Mí</a>
+                    </div>
+                </div>
             </div>
-            <nav>
-                <a href="index.html" class="text-gray-600 hover:text-red-600 px-3 py-2">Cursos Online</a>
-                <a href="sobre-mi.html" class="text-gray-600 hover:text-red-600 px-3 py-2">Sobre Mí</a>
-            </nav>
         </div>
     </header>
 
-    <!-- Contenido Principal -->
-    <!-- Este 'div' es el contenedor que llenaremos con los datos del curso -->
     <main id="detalle-curso-contenedor" class="container mx-auto px-6 py-12">
-        <p>Cargando detalles del curso...</p>
+        <p class="text-center text-2xl">Cargando detalles del curso...</p>
     </main>
 
-    <!-- Pie de Página -->
-    <footer class="bg-white mt-12 py-6">
+    <footer class="bg-white mt-12 py-6 border-t">
         <div class="container mx-auto px-6 text-center text-gray-600">
             <p>&copy; 2025 ApprendiendoSalsa. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <!-- JavaScript para cargar los detalles del curso -->
     <script>
-        // La dirección base de nuestra "cocina" en Render
         const API_URL = "https://stripe-backend-apprendiendo.onrender.com/api/cursos";
 
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Obtenemos el ID del curso de la URL (ej. ?id=1)
             const params = new URLSearchParams(window.location.search);
             const cursoId = params.get('id');
 
@@ -62,14 +67,16 @@
         async function fetchDetalleCurso(id) {
             const contenedor = document.getElementById('detalle-curso-contenedor');
             try {
-                // 2. Pedimos a la cocina los detalles de ESE curso en concreto
                 const response = await fetch(`${API_URL}/${id}`);
-                if (!response.ok) throw new Error('Curso no encontrado');
+                if (!response.ok) throw new Error(`El servidor respondió con un error: ${response.status}`);
+                
                 const curso = await response.json();
-
-                // 3. "Dibujamos" la página con los datos recibidos
-                document.title = `${curso.titulo} - ApprendiendoSalsa`; // Actualizamos el título de la pestaña
+                
+                document.title = `${curso.titulo} - ApprendiendoSalsa`;
                 contenedor.innerHTML = renderDetalleCurso(curso);
+                
+                // Añadimos la interactividad al acordeón después de que se haya renderizado
+                inicializarAcordeon();
 
             } catch (error) {
                 console.error("Error al cargar el detalle del curso:", error);
@@ -79,61 +86,75 @@
 
         function mostrarError(mensaje) {
             const contenedor = document.getElementById('detalle-curso-contenedor');
-            contenedor.innerHTML = `<p class="text-center text-red-500 text-2xl">${mensaje}</p>`;
+            contenedor.innerHTML = `<div class="text-center py-20"><p class="text-red-500 text-2xl font-semibold">${mensaje}</p><a href="index.html" class="mt-4 inline-block bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-700">Volver a los cursos</a></div>`;
         }
         
-        // Esta función construye todo el HTML de la página de detalle
+        // --- INICIO DE LA LÓGICA DE RENDERIZADO MEJORADA ---
+
         function renderDetalleCurso(curso) {
-             let precioHTML = `<span class="text-4xl font-bold text-gray-900">${curso.precio.toFixed(2)}€</span>`;
-            if (curso.precio_oferta) {
-                precioHTML = `
-                    <span class="text-4xl font-bold text-red-600">${curso.precio_oferta.toFixed(2)}€</span>
-                    <span class="text-2xl line-through text-gray-500 ml-2">${curso.precio.toFixed(2)}€</span>
-                `;
-            }
+            // Lógica para separar vídeos sueltos y módulos normales
+            const modulosNormales = curso.modulos.filter(m => !m.titulo.startsWith('__videos_sueltos'));
+            const moduloVirtual = curso.modulos.find(m => m.titulo.startsWith('__videos_sueltos'));
+            const videosSueltos = moduloVirtual ? moduloVirtual.videos : [];
+
+            const precioHTML = `<span class="text-4xl font-bold text-gray-900">${parseFloat(curso.precio).toFixed(2)}€</span>`;
+            const videoTrailerHTML = curso.url_video_trailer ? `
+                <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg mb-8 overflow-hidden">
+                    <iframe src="${curso.url_video_trailer}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>` : `
+                <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-8 flex items-center justify-center">
+                    <p class="text-gray-500">No hay vídeo de presentación disponible</p>
+                </div>`;
+            
+            // Renderiza la sección de vídeos sueltos SÓLO si existen
+            const videosSueltosHTML = videosSueltos.length > 0 ? `
+                <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-6 mt-10">Lecciones Individuales</h3>
+                <div class="space-y-3">
+                    ${videosSueltos.map(video => renderFilaVideo(video)).join('')}
+                </div>` : '';
+
+            // Renderiza la sección de módulos SÓLO si existen
+            const modulosNormalesHTML = modulosNormales.length > 0 ? `
+                <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-6 mt-10">Temario del Curso</h3>
+                <div class="space-y-4">
+                    ${modulosNormales.map(modulo => renderModuloAcordeon(modulo)).join('')}
+                </div>` : '';
 
             return `
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    <!-- Columna Izquierda: Información Principal -->
                     <div class="lg:col-span-2">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <span class="inline-block bg-red-100 text-red-800 text-lg font-semibold px-4 py-1 rounded-full">${curso.nivel}</span>
-                            <span class="inline-block bg-gray-100 text-gray-800 text-lg font-semibold px-4 py-1 rounded-full">${curso.categoria}</span>
+                        <div class="flex items-center space-x-3 mb-4 text-sm font-semibold">
+                            <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full">${curso.nivel || 'N/A'}</span>
+                            <span class="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full">Duración: ${curso.duracion_total || 'N/A'}</span>
                         </div>
-                        <h2 class="text-5xl font-bold mb-2">${curso.titulo}</h2>
-                        <p class="text-2xl text-gray-600 mb-8">${curso.subtitulo}</p>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-2">${curso.titulo}</h2>
+                        <p class="text-xl md:text-2xl text-gray-600 mb-8">${curso.descripcion_corta}</p>
                         
-                        <!-- Aquí iría el vídeo de presentación -->
-                        <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg mb-8 text-white flex items-center justify-center">
-                            <p>(Vídeo de Presentación del Curso)</p>
-                        </div>
+                        ${videoTrailerHTML}
 
-                        <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-4">Descripción del Curso</h3>
-                        <div class="text-gray-700 space-y-4 leading-relaxed">
-                            <!-- Aquí podrías usar la descripción larga -->
-                            <p>${curso.descripcion_corta}</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-6">Descripción del Curso</h3>
+                        <div class="text-gray-700 space-y-4 leading-relaxed prose max-w-none">
+                           ${curso.descripcion_larga || '<p>No hay una descripción detallada disponible.</p>'}
                         </div>
                         
-                        <!-- Aquí iría la lista de módulos -->
-                        <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-4 mt-10">Contenido del Curso</h3>
-                        <p class="text-gray-700">Aquí se mostrará la lista de módulos y lecciones...</p>
+                        ${videosSueltosHTML}
+                        ${modulosNormalesHTML}
+
                     </div>
 
-                    <!-- Columna Derecha: Tarjeta de Compra -->
                     <div class="lg:col-span-1">
                         <div class="bg-white rounded-lg shadow-lg p-6 sticky top-28">
-                            <img src="${curso.url_imagen_portada}" alt="Imagen del curso ${curso.titulo}" class="w-full h-48 object-cover rounded-md mb-4">
-                            <div class="mb-6">
+                            <img src="${curso.url_imagen_portada || 'https://via.placeholder.com/500x281.png?text=Curso+de+Salsa'}" alt="Imagen del curso ${curso.titulo}" class="w-full h-auto object-cover rounded-md mb-4">
+                            <div class="mb-6 text-center">
                                 ${precioHTML}
                             </div>
                             <button class="w-full bg-red-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-red-700 transition-colors duration-300">
                                 Comprar Ahora
                             </button>
                             <ul class="text-gray-600 mt-6 space-y-2 text-sm">
-                                <li>✓ Acceso de por vida</li>
-                                <li>✓ Aprende desde cualquier dispositivo</li>
-                                <li>✓ Certificado de finalización (próximamente)</li>
+                                <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Acceso de por vida</li>
+                                <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Aprende desde cualquier dispositivo</li>
+                                <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Certificado de finalización</li>
                             </ul>
                         </div>
                     </div>
@@ -141,7 +162,52 @@
             `;
         }
 
-    </script>
+        // Función para renderizar una fila de vídeo (usada para vídeos sueltos y dentro de módulos)
+        function renderFilaVideo(video) {
+            return `
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-md">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="text-gray-800">${video.titulo}</span>
+                    </div>
+                    <span class="text-sm text-gray-500">${video.duracion_minutos || 0} min</span>
+                </div>
+            `;
+        }
 
+        // Función para renderizar un módulo completo como un acordeón
+        function renderModuloAcordeon(modulo) {
+            return `
+                <div class="bg-white rounded-lg shadow">
+                    <button class="acordeon-titulo w-full flex justify-between items-center text-left p-4 font-semibold text-lg">
+                        <span>${modulo.titulo}</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="acordeon-contenido hidden p-4 border-t border-gray-200">
+                        <div class="space-y-3">
+                            ${modulo.videos.length > 0 ? modulo.videos.map(video => renderFilaVideo(video)).join('') : '<p class="text-gray-500">No hay vídeos en este módulo.</p>'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Función para añadir la funcionalidad al acordeón
+        function inicializarAcordeon() {
+            const titulos = document.querySelectorAll('.acordeon-titulo');
+            titulos.forEach(titulo => {
+                titulo.addEventListener('click', () => {
+                    const contenido = titulo.nextElementSibling;
+                    const icono = titulo.querySelector('svg');
+                    
+                    contenido.classList.toggle('hidden');
+                    icono.classList.toggle('rotate-180');
+                });
+            });
+        }
+
+        // --- FIN DE LA LÓGICA DE RENDERIZADO MEJORADA ---
+
+    </script>
 </body>
 </html>
