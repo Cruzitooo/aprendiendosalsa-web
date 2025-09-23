@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargando curso... - ApprendiendoSalsa</title>
+    <title>Cargando curso... - AprendiendoSalsa</title>
+    
+    <link rel="icon" type="image/png" href="Logo Aprendiendosalsa 2.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -204,6 +207,33 @@
                     icono.classList.toggle('rotate-180');
                 });
             });
+        }
+
+
+
+        // Función para renderizar una fila de vídeo, ahora con miniaturas
+        function renderFilaVideo(video) {
+            // Primero, decidimos si mostramos una imagen o el icono por defecto
+            let imagenHTML;
+            if (video.url_thumbnail && video.url_thumbnail.trim() !== '') {
+                // Si hay una URL de miniatura, creamos una etiqueta de imagen
+                imagenHTML = `<img src="${video.url_thumbnail}" alt="Miniatura de ${video.titulo}" class="w-16 h-9 object-cover rounded-md mr-4 flex-shrink-0">`;
+            } else {
+                // Si no, usamos el icono de 'play' como antes
+                imagenHTML = `<div class="w-16 h-9 bg-gray-200 rounded-md mr-4 flex-shrink-0 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                              </div>`;
+            }
+
+            // Devolvemos el HTML completo de la fila
+            return `
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center min-w-0"> ${imagenHTML}
+                        <span class="text-gray-800 font-medium truncate">${video.titulo}</span>
+                    </div>
+                    <span class="text-sm text-gray-500 ml-4 flex-shrink-0">${video.duracion_minutos || 0} min</span>
+                </div>
+            `;
         }
 
         // --- FIN DE LA LÓGICA DE RENDERIZADO MEJORADA ---
