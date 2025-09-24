@@ -168,7 +168,7 @@
             `;
         }
 
-        // --- SUSTITUIMOS la antigua 'renderFilaVideo' por la nueva 'renderTarjetaVideo' ---
+       // --- SUSTITUIMOS la antigua 'renderFilaVideo' por la nueva 'renderTarjetaVideo' ---
         function renderTarjetaVideo(video) {
             // Lógica para obtener la URL de la miniatura
             const youtubeID = getYouTubeID(video.url_video);
@@ -178,7 +178,9 @@
                 <div class="bg-white rounded-lg shadow-md overflow-hidden group transform hover:-translate-y-1 transition-transform duration-300">
                     <a href="${video.url_video}" target="_blank" class="block">
                         <div class="relative">
-                            <img src="${thumbnail}" alt="Miniatura de ${video.titulo}" class="w-full h-32 object-cover">
+                            <div class="aspect-w-16 aspect-h-9">
+                                <img src="${thumbnail}" alt="Miniatura de ${video.titulo}" class="w-full h-full object-cover">
+                            </div>
                             <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8.002v3.996a1 1 0 001.555.832l3.248-1.998a1 1 0 000-1.664l-3.248-1.998z" clip-rule="evenodd"></path></svg>
                             </div>
