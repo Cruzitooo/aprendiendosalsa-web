@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Estilos para el menú de hamburguesa */
         #menu-button:focus ~ #mobile-menu, #mobile-menu:hover { display: block; }
     </style>
 </head>
@@ -23,7 +22,7 @@
     <div class="container mx-auto px-6 py-4">
         <div class="flex justify-between items-center">
             <a href="index.html">
-                <img src="Logo Aprendiendosalsa 2.png" alt="Logo de ApprendiendoSalsa" class="h-12 w-auto">
+                <img src="Logo Aprendiendosalsa 2.png" alt="Logo de AprendiendoSalsa" class="h-12 w-auto">
             </a>
             
             <nav class="hidden md:flex space-x-4">
@@ -49,7 +48,7 @@
 
     <footer class="bg-white mt-12 py-6 border-t">
         <div class="container mx-auto px-6 text-center text-gray-600">
-            <p>&copy; 2025 ApprendiendoSalsa. Todos los derechos reservados.</p>
+            <p>&copy; 2025 AprendiendoSalsa. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -75,10 +74,9 @@
                 
                 const curso = await response.json();
                 
-                document.title = `${curso.titulo} - ApprendiendoSalsa`;
+                document.title = `${curso.titulo} - AprendiendoSalsa`;
                 contenedor.innerHTML = renderDetalleCurso(curso);
                 
-                // Añadimos la interactividad al acordeón después de que se haya renderizado
                 inicializarAcordeon();
 
             } catch (error) {
@@ -92,36 +90,41 @@
             contenedor.innerHTML = `<div class="text-center py-20"><p class="text-red-500 text-2xl font-semibold">${mensaje}</p><a href="index.html" class="mt-4 inline-block bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-700">Volver a los cursos</a></div>`;
         }
         
-        // --- INICIO DE LA LÓGICA DE RENDERIZADO MEJORADA ---
+        function getYouTubeID(url) {
+            if (!url) return null;
+            const pattern = /(?<=v=|v\/|vi=|vi\/|youtu.be\/|embed\/|\/v\/|\/e\/|watch\?v=|&v=)([^#\&\?]*)/;
+            const match = url.match(pattern);
+            return match ? match[0] : null;
+        }
 
         function renderDetalleCurso(curso) {
-            // Lógica para separar vídeos sueltos y módulos normales
-            const modulosNormales = curso.modulos.filter(m => !m.titulo.startsWith('__videos_sueltos'));
-            const moduloVirtual = curso.modulos.find(m => m.titulo.startsWith('__videos_sueltos'));
-            const videosSueltos = moduloVirtual ? moduloVirtual.videos : [];
+            const modulosNormales = curso.modulos ? curso.modulos.filter(m => !m.titulo.startsWith('__videos_sueltos')) : [];
+            const moduloVirtual = curso.modulos ? curso.modulos.find(m => m.titulo.startsWith('__videos_sueltos')) : null;
+            const videosSueltos = moduloVirtual ? (moduloVirtual.videos || []) : [];
 
-            const precioHTML = `<span class="text-4xl font-bold text-gray-900">${parseFloat(curso.precio).toFixed(2)}€</span>`;
+            const precioHTML = `<span class="text-4xl font-bold text-gray-900">${parseFloat(curso.precio || 0).toFixed(2)}€</span>`;
+            
             const videoTrailerHTML = curso.url_video_trailer ? `
-                <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg mb-8 overflow-hidden">
-                    <iframe src="${curso.url_video_trailer}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg mb-8 overflow-hidden shadow-lg">
+                    <iframe src="https://www.youtube.com/embed/${getYouTubeID(curso.url_video_trailer)}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
                 </div>` : `
                 <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-8 flex items-center justify-center">
                     <p class="text-gray-500">No hay vídeo de presentación disponible</p>
                 </div>`;
             
-            // Renderiza la sección de vídeos sueltos SÓLO si existen
+            // --- INICIO DEL CAMBIO DE DISEÑO ---
             const videosSueltosHTML = videosSueltos.length > 0 ? `
                 <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-6 mt-10">Lecciones Individuales</h3>
-                <div class="space-y-3">
-                    ${videosSueltos.map(video => renderFilaVideo(video)).join('')}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${videosSueltos.map(video => renderTarjetaVideo(video)).join('')}
                 </div>` : '';
 
-            // Renderiza la sección de módulos SÓLO si existen
             const modulosNormalesHTML = modulosNormales.length > 0 ? `
                 <h3 class="text-3xl font-bold border-b-2 border-red-200 pb-2 mb-6 mt-10">Temario del Curso</h3>
                 <div class="space-y-4">
                     ${modulosNormales.map(modulo => renderModuloAcordeon(modulo)).join('')}
                 </div>` : '';
+            // --- FIN DEL CAMBIO DE DISEÑO ---
 
             return `
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -165,37 +168,49 @@
             `;
         }
 
-        // Función para renderizar una fila de vídeo (usada para vídeos sueltos y dentro de módulos)
-        function renderFilaVideo(video) {
+        // --- SUSTITUIMOS la antigua 'renderFilaVideo' por la nueva 'renderTarjetaVideo' ---
+        function renderTarjetaVideo(video) {
+            // Lógica para obtener la URL de la miniatura
+            const youtubeID = getYouTubeID(video.url_video);
+            const thumbnail = video.url_thumbnail || (youtubeID ? `https://img.youtube.com/vi/${youtubeID}/mqdefault.jpg` : 'https://via.placeholder.com/320x180.png?text=Video');
+            
             return `
-                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                    <div class="flex items-center">
-                        <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span class="text-gray-800">${video.titulo}</span>
-                    </div>
-                    <span class="text-sm text-gray-500">${video.duracion_minutos || 0} min</span>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden group transform hover:-translate-y-1 transition-transform duration-300">
+                    <a href="${video.url_video}" target="_blank" class="block">
+                        <div class="relative">
+                            <img src="${thumbnail}" alt="Miniatura de ${video.titulo}" class="w-full h-32 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8.002v3.996a1 1 0 001.555.832l3.248-1.998a1 1 0 000-1.664l-3.248-1.998z" clip-rule="evenodd"></path></svg>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-800 truncate">${video.titulo}</h4>
+                            <p class="text-sm text-gray-500 mt-1">${video.duracion_minutos || 0} min</p>
+                        </div>
+                    </a>
                 </div>
             `;
         }
-
-        // Función para renderizar un módulo completo como un acordeón
+        
         function renderModuloAcordeon(modulo) {
+             // Ahora el contenido del acordeón también usa las tarjetas de vídeo
+             const videosHTML = (modulo.videos && modulo.videos.length > 0)
+                ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">${modulo.videos.map(video => renderTarjetaVideo(video)).join('')}</div>`
+                : '<p class="text-sm text-gray-500">No hay vídeos en este módulo.</p>';
+
             return `
-                <div class="bg-white rounded-lg shadow">
-                    <button class="acordeon-titulo w-full flex justify-between items-center text-left p-4 font-semibold text-lg">
+                <div class="bg-white rounded-lg shadow-sm">
+                    <button class="acordeon-titulo w-full flex justify-between items-center text-left p-4 font-semibold text-lg hover:bg-gray-50 transition-colors duration-200">
                         <span>${modulo.titulo}</span>
                         <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="acordeon-contenido hidden p-4 border-t border-gray-200">
-                        <div class="space-y-3">
-                            ${modulo.videos.length > 0 ? modulo.videos.map(video => renderFilaVideo(video)).join('') : '<p class="text-gray-500">No hay vídeos en este módulo.</p>'}
-                        </div>
+                        ${videosHTML}
                     </div>
                 </div>
             `;
         }
 
-        // Función para añadir la funcionalidad al acordeón
         function inicializarAcordeon() {
             const titulos = document.querySelectorAll('.acordeon-titulo');
             titulos.forEach(titulo => {
@@ -208,36 +223,6 @@
                 });
             });
         }
-
-
-
-        // Función para renderizar una fila de vídeo, ahora con miniaturas
-        function renderFilaVideo(video) {
-            // Primero, decidimos si mostramos una imagen o el icono por defecto
-            let imagenHTML;
-            if (video.url_thumbnail && video.url_thumbnail.trim() !== '') {
-                // Si hay una URL de miniatura, creamos una etiqueta de imagen
-                imagenHTML = `<img src="${video.url_thumbnail}" alt="Miniatura de ${video.titulo}" class="w-16 h-9 object-cover rounded-md mr-4 flex-shrink-0">`;
-            } else {
-                // Si no, usamos el icono de 'play' como antes
-                imagenHTML = `<div class="w-16 h-9 bg-gray-200 rounded-md mr-4 flex-shrink-0 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                              </div>`;
-            }
-
-            // Devolvemos el HTML completo de la fila
-            return `
-                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center min-w-0"> ${imagenHTML}
-                        <span class="text-gray-800 font-medium truncate">${video.titulo}</span>
-                    </div>
-                    <span class="text-sm text-gray-500 ml-4 flex-shrink-0">${video.duracion_minutos || 0} min</span>
-                </div>
-            `;
-        }
-
-        // --- FIN DE LA LÓGICA DE RENDERIZADO MEJORADA ---
-
     </script>
 </body>
 </html>
