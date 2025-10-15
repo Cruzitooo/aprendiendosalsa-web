@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Portal de Pagos - Mi Mambo Family</title>
+    
+    <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,14 +48,13 @@
     </div>
 
     <script>
-        // Referencias a los elementos de la página
+        // El resto del código JavaScript se mantiene igual...
         const loader = document.getElementById('loader');
         const mensajeCargando = document.getElementById('mensaje-cargando');
         const errorDiv = document.getElementById('payment-error');
         const infoPagoDiv = document.getElementById('info-pago');
         const botonPagar = document.getElementById('boton-pagar');
 
-        // Esta función se ejecuta cuando la página carga
         document.addEventListener('DOMContentLoaded', async () => {
             mensajeCargando.textContent = "Cargando tus datos de pago...";
             loader.style.display = 'block';
