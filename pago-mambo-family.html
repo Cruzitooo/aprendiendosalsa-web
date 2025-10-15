@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Pagos - Mi Mambo Family</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="payment-container">
+        <div id="loading-spinner">Cargando datos del miembro...</div>
+
+        <div id="payment-content" style="display: none;">
+            <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="logo"> <h1>Portal de Pagos</h1>
+            
+            <h2 id="nombre-miembro"></h2>
+            
+            <div class="payment-details">
+                <h3>Desglose de tu Cuota Mensual</h3>
+                <p id="desglose-pago">Calculando...</p>
+                <hr>
+                <p class="total">Total a Pagar: <strong id="total-pago">--.-- €</strong></p>
+            </div>
+            
+            <button id="stripe-payment-button" disabled>Pagar con Tarjeta</button>
+        </div>
+        
+        <div id="error-message" style="display: none;">
+            <h2>Error</h2>
+            <p>No se pudieron cargar los datos. Por favor, asegúrate de que el enlace es correcto o contacta con la escuela.</p>
+        </div>
+    </div>
+
+    <script>
+        // Este código se ejecuta cuando la página ha cargado
+        document.addEventListener('DOMContentLoaded', async () => {
+            
+            // 1. EL DETECTIVE DE LA URL: Busca el DNI del miembro en el enlace.
+            const params = new URLSearchParams(window.location.search);
+            const miembroId = params.get('id');
+
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const paymentContent = document.getElementById('payment-content');
+            const errorMessage = document.getElementById('error-message');
+
+            if (!miembroId) {
+                console.error("No se encontró 'id' de miembro en la URL.");
+                loadingSpinner.style.display = 'none';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // 2. EL MENSAJERO: Prepara la llamada al servidor.
+            const backendUrl = `https://stripe-backend-apprendiendo.onrender.com/api/pagos-mambo-family/datos-miembro/${miembroId}`;
+
+            try {
+                // 3. LA LLAMADA: Contacta con el servidor para pedir los datos.
+                console.log(`Contactando al servidor en: ${backendUrl}`);
+                const response = await fetch(backendUrl);
+
+                if (!response.ok) {
+                    throw new Error(`El servidor respondió con un error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Datos recibidos del servidor:", data);
+
+                // 4. RELLENANDO EL ESCAPARATE: Inserta los datos en la página.
+                // PRÓXIMAMENTE: Aquí usaremos los datos reales (data.nombre, data.total, etc.)
+                // Por ahora, solo mostramos el mensaje de prueba que devuelve el servidor.
+                
+                document.getElementById('nombre-miembro').textContent = `¡Hola! (Nombre Próximamente)`;
+                document.getElementById('desglose-pago').textContent = data.message; // <-- Mostramos el mensaje de prueba
+                document.getElementById('total-pago').textContent = `??.?? €`;
+                
+                // Mostramos el contenido y ocultamos el spinner
+                loadingSpinner.style.display = 'none';
+                paymentContent.style.display = 'block';
+                
+                // PRÓXIMAMENTE: Activar el botón de pago
+                // document.getElementById('stripe-payment-button').disabled = false;
+
+            } catch (error) {
+                console.error("Error al obtener los datos del miembro:", error);
+                loadingSpinner.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
