@@ -1,0 +1,169 @@
+/* --- INICIO: CONTENIDO COMPLETO PARA style.css --- */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('fotofondo_landing.jpg'); /* Mantenido */
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.85); /* Mantenido (con tu 0.65 original si prefieres) */
+  border-radius: 30px;
+  padding: 2rem 2.5rem; 
+  max-width: 380px; 
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-top: 2rem; 
+  margin-bottom: 2rem; 
+  /* Quitamos position absolute que tenías duplicado antes */
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  /* Corregido: margin-bottom: 0,0 -> 0 */
+  margin: 0.5rem 0 0.5rem; 
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #111;
+}
+
+p {
+  margin: 0 0 1.5rem;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* --- Regla MODIFICADA/NUEVA para TODOS los campos del formulario --- */
+#nombre,
+#email,
+#concepto,         /* Input de concepto */
+#price-options,    /* Desplegable de precios */
+#custom-amount     /* Input de importe personalizado */
+{
+    width: 100%;
+    /* Usamos solo margen inferior para espaciado consistente */
+    margin-top: 0;
+    margin-left: 0; 
+    margin-right: 0;
+    margin-bottom: 1rem; 
+    padding: 0.75rem; /* Tu padding original */
+    border-radius: 12px; /* Tu border-radius original */
+    border: 1px solid #ccc; /* Tu borde original */
+    font-size: 0.95rem; /* Tu font-size original */
+    display: block; 
+    box-sizing: border-box;
+    background-color: white; 
+    font-family: inherit; /* Heredar fuente del body */
+}
+
+/* --- NUEVO: Estilos para las etiquetas <label> --- */
+#formulario label {
+    display: block;       
+    margin-bottom: 6px;  
+    font-weight: 500;    
+    font-size: 0.88rem;  
+    color: #4b5563;      
+    text-align: left;     
+    padding-left: 4px;    
+}
+
+/* --- NUEVO: Margen inferior para la sección del importe personalizado --- */
+#custom-amount-section {
+    margin-bottom: 1rem; /* Mismo margen que los otros campos */
+}
+
+/* --- NUEVO: (Opcional) Estilos específicos para el desplegable <select> --- */
+#price-options {
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Flecha SVG azul como ejemplo */
+     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233a67f9%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+     background-repeat: no-repeat;
+     background-position: right 0.8em top 50%;
+     background-size: 0.65em auto;
+     padding-right: 2.5em; /* Espacio extra para la flecha */
+     cursor: pointer; /* Indicar que es clickeable */
+}
+
+/* Para quitar spinners en el campo numérico personalizado (opcional) */
+#custom-amount::-webkit-outer-spin-button,
+#custom-amount::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#custom-amount {
+  -moz-appearance: textfield; 
+}
+
+/* --- NUEVO: Estilo para opciones deshabilitadas --- */
+select option:disabled {
+  color: #999;
+  background-color: #f0f0f0;
+}
+
+/* --- Estilos del Botón (Como los tenías) --- */
+button {
+  padding: 0.8rem 1.5rem;
+  width: 80%;
+  border: none;
+  border-radius: 12px;
+  background-color: #3a67f9;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 0.5rem; /* Añadido pequeño margen superior */
+}
+
+button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* --- Estilos del Footer (Como los tenías) --- */
+.powered {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  margin-bottom: 0;
+  color: #666;
+}
+.stripe-logo {
+  /* Corregido: margin-top: 0,8rem -> 0.8rem */
+  margin-top: 0.8rem; 
+  width: 120px; 
+  height: auto;
+  opacity: 0.7; 
+  filter: grayscale(100%) brightness(0%) invert(30%);
+}
+
+/* --- FIN: CONTENIDO COMPLETO PARA style.css --- */
