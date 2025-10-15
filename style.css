@@ -3,7 +3,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat', sans-serif; /* <-- CAMBIO DE FUENTE */
+    font-family: 'Montserrat', sans-serif;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -46,7 +46,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* --- ESTILOS DE TÍTULOS REDISEÑADOS --- */
 h1 {
     font-size: 1.1rem;
     font-weight: 700;
@@ -69,7 +68,7 @@ p {
     font-size: 0.9rem;
 }
 
-/* --- Reglas para los campos del formulario (se mantienen por si las necesitas en otras páginas) --- */
+/* --- Reglas para los campos del formulario --- */
 #nombre,
 #email,
 #concepto,
@@ -157,11 +156,31 @@ button:disabled {
   color: #666;
 }
 .stripe-logo {
-  margin-top: 0.5rem; /* <-- VALOR REDUCIDO */
-  width: 100px; /* Un poco más pequeño para ser más sutil */
+  margin-top: 0.5rem;
+  width: 100px;
   height: auto;
-  opacity: 0.5; /* Un poco más transparente */
+  opacity: 0.5;
   filter: grayscale(100%) brightness(0%) invert(30%);
 }
 
-/* --- FIN: CONTENIDO COMPLETO PARA style.css --- */
+/* --- ▼▼▼ NUEVO BLOQUE DE AJUSTES DE COMPACTACIÓN ▼▼▼ --- */
+
+/* 1. Reduce el espacio de la línea horizontal */
+#info-pago hr {
+    margin: 1.2rem 0;
+}
+
+/* 2. Reduce el espacio DEBAJO del "Total a Pagar" */
+.total-line {
+    margin-bottom: 1rem; /* Reduce el margen inferior */
+}
+
+/* 3. Ajusta el espacio ENCIMA del botón */
+#boton-pagar {
+    margin-top: 0; /* Elimina el margen superior del botón */
+}
+
+/* 4. Ajusta el espacio del contenedor del logo de Stripe */
+.stripe-logo-container {
+    margin-top: 0.8rem;
+}
