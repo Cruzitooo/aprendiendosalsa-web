@@ -48,27 +48,32 @@
     </div>
 
     <script>
-        // El resto del código JavaScript se mantiene igual...
+        // Referencias a los elementos de la página
         const loader = document.getElementById('loader');
         const mensajeCargando = document.getElementById('mensaje-cargando');
         const errorDiv = document.getElementById('payment-error');
         const infoPagoDiv = document.getElementById('info-pago');
         const botonPagar = document.getElementById('boton-pagar');
 
+        // "Mochila" para guardar los datos del miembro y usarlos en el botón
+        let datosMiembroGlobal = null;
+        let miembroIdGlobal = null;
+
+        // Función que se ejecuta cuando la página carga
         document.addEventListener('DOMContentLoaded', async () => {
             mensajeCargando.textContent = "Cargando tus datos de pago...";
             loader.style.display = 'block';
             mensajeCargando.style.display = 'block';
 
             const params = new URLSearchParams(window.location.search);
-            const miembroId = params.get('id');
+            miembroIdGlobal = params.get('id'); // Guardamos el ID en la "mochila"
 
-            if (!miembroId) {
+            if (!miembroIdGlobal) {
                 mostrarError("Enlace inválido. No se encontró el identificador del miembro.");
                 return;
             }
 
-            const backendUrl = `https://stripe-backend-apprendiendo.onrender.com/api/pagos-mambo-family/datos-miembro/${miembroId}`;
+            const backendUrl = `https://stripe-backend-apprendiendo.onrender.com/api/pagos-mambo-family/datos-miembro/${miembroIdGlobal}`;
 
             try {
                 const response = await fetch(backendUrl);
@@ -76,16 +81,13 @@
                     const errorData = await response.json().catch(() => ({}));
                     throw new Error(errorData.error || `Error del servidor: ${response.status}`);
                 }
-                const datos = await response.json();
+                datosMiembroGlobal = await response.json(); // Guardamos todos los datos en la "mochila"
                 
-                document.getElementById('nombre-miembro').textContent = datos.nombreMiembro || "Miembro";
-                document.getElementById('total-pago').textContent = `${(datos.totalAPagar || 0).toFixed(2)} €`;
+                // Rellenamos la página con los datos
+                document.getElementById('nombre-miembro').textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
+                document.getElementById('total-pago').textContent = `${(datosMiembroGlobal.totalAPagar || 0).toFixed(2)} €`;
                 
-                const desgloseHtml = `
-                    <p>Cuota Fija: ${(datos.cuotaFija || 0).toFixed(2)} €</p>
-                    <p>Parte de la Sala: ${(datos.cuotaSala || 0).toFixed(2)} €</p>
-                    ${(datos.penalizacion || 0) > 0 ? `<p style="color: red;"><strong>Penalización por retraso: ${datos.penalizacion.toFixed(2)} €</strong></p>` : ''}
-                `;
+                const desgloseHtml = `<p>Cuota Fija: ${(datosMiembroGlobal.cuotaFija || 0).toFixed(2)} €</p><p>Parte de la Sala: ${(datosMiembroGlobal.cuotaSala || 0).toFixed(2)} €</p>${(datosMiembroGlobal.penalizacion || 0) > 0 ? `<p style="color: red;"><strong>Penalización por retraso: ${datosMiembroGlobal.penalizacion.toFixed(2)} €</strong></p>` : ''}`;
                 document.getElementById('desglose-pago').innerHTML = desgloseHtml;
                 
                 loader.style.display = 'none';
@@ -98,11 +100,61 @@
             }
         });
 
+        // --- ¡NUEVA LÓGICA PARA EL BOTÓN DE PAGO! ---
+        botonPagar.addEventListener('click', async () => {
+            if (!datosMiembroGlobal || !miembroIdGlobal) {
+                mostrarError("No se han cargado los datos para procesar el pago.");
+                return;
+            }
+
+            mensajeCargando.textContent = "Generando tu enlace de pago seguro...";
+            loader.style.display = 'block';
+            mensajeCargando.style.display = 'block';
+            botonPagar.disabled = true;
+            errorDiv.textContent = '';
+
+            // Preparamos el "paquete con etiquetas" para el servidor
+            const datosParaBackend = {
+                concepto: `Cuota Mensual Compañía - ${datosMiembroGlobal.nombreMiembro}`,
+                importe: datosMiembroGlobal.totalAPagar,
+                email: datosMiembroGlobal.emailMiembro,
+                metadata: {
+                    tipoPago: 'cuota_mensual_compania', // Etiqueta clave para el webhook
+                    miembroId: miembroIdGlobal,
+                    mes: new Date().toLocaleString('es-ES', { month: 'long', year: 'numeric' })
+                }
+            };
+
+            try {
+                // Llamamos al endpoint genérico para crear enlaces de Stripe
+                const response = await fetch('https://stripe-backend-apprendiendo.onrender.com/crear-enlace', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosParaBackend)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `Error ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data.url) {
+                    window.location.href = data.url; // Redirigimos a Stripe
+                } else {
+                    throw new Error('El servidor no devolvió una URL de pago.');
+                }
+            } catch (error) {
+                mostrarError(error.message);
+            }
+        });
+
         function mostrarError(mensaje) {
             loader.style.display = 'none';
             mensajeCargando.style.display = 'none';
+            botonPagar.disabled = false; // Re-habilitamos el botón si hay un error
             errorDiv.textContent = `Error: ${mensaje}`;
-            infoPagoDiv.style.display = 'none';
+            infoPagoDiv.style.display = 'block';
         }
     </script>
 </body>
