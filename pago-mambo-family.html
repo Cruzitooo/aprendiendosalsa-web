@@ -3,86 +3,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AprendiendoSalsa - Pago de Clase</title>
-    <style>
-        /* (Tus estilos CSS se mantienen igual) */
-        body { margin: 0; padding: 0; font-family: 'Helvetica Neue', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; position: relative; overflow: hidden; }
-        .background-image { position: absolute; width: 100%; height: 100%; background-image: url('fotofondo_landing.jpg'); background-size: cover; background-position: center; z-index: 0; }
-        .container { position: relative; z-index: 1; background-color: rgba(255, 255, 255, 0.85); border-radius: 30px; padding: 2rem 2.5rem; max-width: 380px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); margin-top: 2rem; margin-bottom: 2rem; }
-        .logo { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin-bottom: 0.5rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-        h1 { margin: 0.5rem 0 0.5rem; font-size: 1.8rem; font-weight: bold; color: #111; }
-        p { margin: 0 0 1.5rem; color: #555; font-size: 0.9rem; }
-        #nombre, #email, #concepto, #price-options, #custom-amount { width: 100%; margin-top: 0; margin-left: 0; margin-right: 0; margin-bottom: 1rem; padding: 0.75rem; border-radius: 12px; border: 1px solid #ccc; font-size: 0.95rem; display: block; box-sizing: border-box; background-color: white; font-family: inherit; }
-        #formulario label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.88rem; color: #4b5563; text-align: left; padding-left: 4px; }
-        #custom-amount-section { margin-bottom: 1rem; }
-        #price-options { appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233a67f9%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.8em top 50%; background-size: 0.65em auto; padding-right: 2.5em; cursor: pointer; }
-        #custom-amount::-webkit-outer-spin-button, #custom-amount::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        #custom-amount { -moz-appearance: textfield; }
-        select optgroup { font-weight: bold; font-style: normal; }
-        button { padding: 0.8rem 1.5rem; width: 80%; border: none; border-radius: 12px; background-color: #3a67f9; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; transition: background 0.3s ease; margin-top: 0.5rem; }
-        button:disabled { background-color: #9ca3af; cursor: not-allowed; }
-        .loader { display: none; border: 4px solid #f3f3f3; border-top: 4px solid #3a67f9; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto 10px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .mensaje-cargando { display: none; text-align: center; color: #666; font-size: 0.9rem; margin-top: 10px; }
-        .stripe-logo-container { margin-top: 1rem; }
-        .stripe-logo { width: 120px; height: auto; opacity: 0.7; filter: grayscale(100%) brightness(0%) invert(30%); }
-    </style>
-</head>
+    <title>Portal de Pagos - Mi Mambo Family</title>
+    <link rel="stylesheet" href="style.css"> </head>
 <body>
     <div class="background-image"></div>
 
     <div class="container">
-        <img src="logo-aprendiendo.PNG" alt="Logo" class="logo" />
-        <h1>AprendiendoSalsa</h1>
-        <p>Completa el formulario para pagar tu clase</p>
+        <img src="logo-mambo-family.PNG" alt="Logo Mi Mambo Family" class="logo" />
+        <h1>Portal de Pagos</h1>
+        <h2>Mi Mambo Family</h2>
 
-        <form id="formulario">
-            <input type="text" id="nombre" name="nombre" placeholder="Tu Nombre" required />
-            <input type="email" id="email" name="email" placeholder="Tu Email" required />
-            <input type="text" id="concepto" name="concepto" placeholder="Concepto (Ej: Clase Martes Septiembre)" required />
-
-            <div>
-                <label for="price-options">Precio / Opción de Pago:</label>
-                <select id="price-options" name="price_option" required>
-                    <option value="" disabled selected>-- Selecciona una opción --</option>
-                    
-                    <optgroup label="Clase 1 hora">
-                        <option value="1h-suelta">Clase Suelta (€10)</option>
-                        <option value="1h-minimo">Mínimo Obligatorio (€20)</option>
-                        <option value="1h-mes4s-oferta" class="oferta-mensual">Mes (4 sem. oferta - €30)</option>
-                        <option value="1h-mes5s-oferta" class="oferta-mensual">Mes (5 sem. oferta - €40)</option>
-                    </optgroup>
-
-                    <optgroup label="Clase 1.5 horas">
-                        <option value="1.5h-suelta">Clase Suelta (€12)</option>
-                        <option value="1.5h-minimo">Mínimo Obligatorio (€24)</option>
-                        <option value="1.5h-mes4s-oferta" class="oferta-mensual">Mes (4 sem. oferta - €36)</option>
-                        <option value="1.5h-mes5s-oferta" class="oferta-mensual">Mes (5 sem. oferta - €48)</option>
-                    </optgroup>
-
-                    <optgroup label="Clase 2 horas">
-                        <option value="2h-suelta">Clase Suelta (€15)</option>
-                        <option value="2h-minimo">Mínimo Obligatorio (€30)</option>
-                        <option value="2h-mes4s-oferta" class="oferta-mensual">Mes (4 sem. oferta - €45)</option>
-                        <option value="2h-mes5s-oferta" class="oferta-mensual">Mes (5 sem. oferta - €60)</option>
-                    </optgroup>
-                    
-                    <optgroup label="---------">
-                        <option value="otras">Otro importe...</option>
-                    </optgroup>
-                </select>
+        <div id="info-pago" style="display: none; text-align: left; margin: 1.5rem 0;">
+            <p style="font-size: 1.1rem;"><strong>Bienvenido/a, <span id="nombre-miembro"></span></strong></p>
+            
+            <div style="background-color: #f9f9f9; border-radius: 12px; border: 1px solid #eee; padding: 1rem; margin-top: 1rem;">
+                <p style="margin-bottom: 0.5rem;"><strong>Desglose de tu cuota mensual:</strong></p>
+                <div id="desglose-pago" style="padding-left: 1rem;">
+                    </div>
             </div>
-
-            <div id="custom-amount-section" style="display: none;">
-                <label for="custom-amount">Importe Personalizado (€):</label>
-                <input type="text" inputmode="decimal" pattern="[0-9]+([,\.][0-9]+)?" id="custom-amount" name="custom_amount" placeholder="Introduce el importe">
-            </div>
-
-            <button type="submit" id="boton-pagar" disabled>Pagar</button>
-        </form>
+            
+            <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+            
+            <p style="font-size: 1.3rem; font-weight: bold; text-align: right;">Total a Pagar: <span id="total-pago" style="color: #3a67f9;">--.-- €</span></p>
+        </div>
+        
+        <button type="button" id="boton-pagar" disabled>Pagar con Tarjeta</button>
 
         <div id="loader" class="loader"></div>
-        <div id="mensaje-cargando" class="mensaje-cargando">Estamos generando tu enlace de pago...</div>
+        <div id="mensaje-cargando" class="mensaje-cargando"></div>
         <div id="payment-error" style="color: red; margin-top: 10px; font-weight: bold;"></div>
 
         <div class="stripe-logo-container">
@@ -91,156 +39,63 @@
     </div>
 
     <script>
-        const formulario = document.getElementById('formulario');
-        const botonPagar = document.getElementById('boton-pagar');
+        // Referencias a los elementos de la página
         const loader = document.getElementById('loader');
         const mensajeCargando = document.getElementById('mensaje-cargando');
-        const nombreInput = document.getElementById('nombre');
-        const emailInput = document.getElementById('email');
-        const conceptoInput = document.getElementById('concepto');
-        const priceOptionsSelect = document.getElementById('price-options');
-        const customAmountSection = document.getElementById('custom-amount-section');
-        const customAmountInput = document.getElementById('custom-amount');
         const errorDiv = document.getElementById('payment-error');
+        const infoPagoDiv = document.getElementById('info-pago');
+        const botonPagar = document.getElementById('boton-pagar');
 
-        // --- PRECIOS ACTUALIZADOS EN JAVASCRIPT ---
-        const precios = {
-            "1h-suelta": 10.00,
-            "1h-minimo": 20.00,
-            "1h-mes4s-oferta": 30.00,
-            "1h-mes5s-oferta": 40.00,
-            "1.5h-suelta": 12.00,
-            "1.5h-minimo": 24.00,
-            "1.5h-mes4s-oferta": 36.00,
-            "1.5h-mes5s-oferta": 48.00,
-            "2h-suelta": 15.00,
-            "2h-minimo": 30.00,
-            "2h-mes4s-oferta": 45.00,
-            "2h-mes5s-oferta": 60.00
-        };
+        // Esta función se ejecuta cuando la página carga
+        document.addEventListener('DOMContentLoaded', async () => {
+            mensajeCargando.textContent = "Cargando tus datos de pago...";
+            loader.style.display = 'block';
+            mensajeCargando.style.display = 'block';
 
-        function actualizarEstadoOfertas() {
-            const hoy = new Date();
-            const diaDelMes = hoy.getDate();
-            const esPeriodoOferta = (diaDelMes >= 1 && diaDelMes <= 5);
-            console.log(`Hoy es día ${diaDelMes}. ¿Periodo de oferta?: ${esPeriodoOferta}`);
-            
-            const opcionesOferta = document.querySelectorAll('option.oferta-mensual');
-            opcionesOferta.forEach(opcion => {
-                opcion.disabled = !esPeriodoOferta;
-                if (!esPeriodoOferta && priceOptionsSelect.value === opcion.value) {
-                    priceOptionsSelect.value = ""; // Deselecciona si la oferta ya no es válida
-                }
-            });
-            validarFormulario();
-        }
+            const params = new URLSearchParams(window.location.search);
+            const miembroId = params.get('id');
 
-        function manejarCambioOpcionPrecio() {
-            if (priceOptionsSelect.value === 'otras') {
-                customAmountSection.style.display = 'block';
-                customAmountInput.required = true;
-            } else {
-                customAmountSection.style.display = 'none';
-                customAmountInput.required = false;
-                customAmountInput.value = '';
-            }
-            validarFormulario();
-        }
-
-        function validarFormulario() {
-            errorDiv.textContent = '';
-            const nombreValido = nombreInput.value.trim() !== '';
-            const emailValido = emailInput.value.trim() !== '' && emailInput.checkValidity();
-            const conceptoValido = conceptoInput.value.trim() !== '';
-            
-            const opcionPrecioSeleccionada = priceOptionsSelect.value;
-            let precioValido = false;
-
-            if (opcionPrecioSeleccionada === 'otras') {
-                const importeTexto = customAmountInput.value.trim().replace(',', '.');
-                const importeNum = parseFloat(importeTexto);
-                precioValido = !isNaN(importeNum) && importeNum > 0;
-                if (customAmountInput.value.trim() !== '' && !precioValido) {
-                    errorDiv.textContent = 'Introduce un importe numérico válido.';
-                }
-            } else {
-                precioValido = opcionPrecioSeleccionada !== '';
-            }
-            
-            botonPagar.disabled = !(nombreValido && emailValido && conceptoValido && precioValido);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            actualizarEstadoOfertas();
-            manejarCambioOpcionPrecio();
-            validarFormulario();
-        });
-
-        [nombreInput, emailInput, conceptoInput, customAmountInput].forEach(input => input.addEventListener('input', validarFormulario));
-        priceOptionsSelect.addEventListener('change', manejarCambioOpcionPrecio);
-
-        formulario.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            validarFormulario();
-            if (botonPagar.disabled) { return; }
-
-            const alumno = nombreInput.value.trim();
-            const email = emailInput.value.trim();
-            const concepto = conceptoInput.value.trim();
-            const selectedPriceOption = priceOptionsSelect.value;
-            let importe = '';
-
-            if (selectedPriceOption === 'otras') {
-                importe = customAmountInput.value.trim().replace(',', '.');
-            } else {
-                importe = precios[selectedPriceOption]?.toFixed(2) ?? '';
-            }
-
-            const importeNum = parseFloat(importe);
-            if (isNaN(importeNum) || importeNum <= 0) {
-                errorDiv.textContent = 'Error: El importe final no es válido.';
+            if (!miembroId) {
+                mostrarError("Enlace inválido. No se encontró el identificador del miembro.");
                 return;
             }
 
-            const datosParaBackend = {
-                alumno: alumno,
-                email: email,
-                concepto: concepto,
-                importe: importe,
-                priceOptionKey: selectedPriceOption
-            };
-
-            console.log('Enviando al backend:', datosParaBackend);
-            errorDiv.textContent = '';
-            loader.style.display = 'block';
-            mensajeCargando.style.display = 'block';
-            botonPagar.disabled = true;
+            const backendUrl = `https://stripe-backend-apprendiendo.onrender.com/api/pagos-mambo-family/datos-miembro/${miembroId}`;
 
             try {
-                const response = await fetch('https://stripe-backend-apprendiendo.onrender.com/crear-enlace', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(datosParaBackend)
-                });
+                const response = await fetch(backendUrl);
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
-                    const errorMessage = errorData.error || `Error ${response.status}: ${response.statusText}`;
-                    throw new Error(errorMessage);
+                    throw new Error(errorData.error || `Error del servidor: ${response.status}`);
                 }
-                const data = await response.json();
-                if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    throw new Error('El servidor no devolvió una URL de pago.');
-                }
-            } catch (error) {
-                console.error('Error en fetch:', error);
-                errorDiv.textContent = `Error: ${error.message || 'No se pudo procesar el pago.'}`;
+                const datos = await response.json();
+                
+                document.getElementById('nombre-miembro').textContent = datos.nombreMiembro || "Miembro";
+                document.getElementById('total-pago').textContent = `${(datos.totalAPagar || 0).toFixed(2)} €`;
+                
+                const desgloseHtml = `
+                    <p>Cuota Fija: ${(datos.cuotaFija || 0).toFixed(2)} €</p>
+                    <p>Parte de la Sala: ${(datos.cuotaSala || 0).toFixed(2)} €</p>
+                    ${(datos.penalizacion || 0) > 0 ? `<p style="color: red;"><strong>Penalización por retraso: ${datos.penalizacion.toFixed(2)} €</strong></p>` : ''}
+                `;
+                document.getElementById('desglose-pago').innerHTML = desgloseHtml;
+                
                 loader.style.display = 'none';
                 mensajeCargando.style.display = 'none';
+                infoPagoDiv.style.display = 'block';
                 botonPagar.disabled = false;
+
+            } catch (error) {
+                mostrarError(error.message);
             }
         });
+
+        function mostrarError(mensaje) {
+            loader.style.display = 'none';
+            mensajeCargando.style.display = 'none';
+            errorDiv.textContent = `Error: ${mensaje}`;
+            infoPagoDiv.style.display = 'none';
+        }
     </script>
 </body>
 </html>
