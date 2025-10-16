@@ -17,10 +17,6 @@
 
     <div class="container">
         
-        <!-- =============================================================== -->
-        <!-- ==        NUEVA ESTRUCTURA DEL ENCABEZADO (TU DISEÑO)        == -->
-        <!-- =============================================================== -->
-
         <div class="header-v3">
             <h2>Mi Mambo Family</h2>
             <h1>Portal de Pagos</h1>
@@ -29,11 +25,10 @@
         <hr class="header-divider">
 
         <div id="profile-section" style="display: none;">
-            <img id="foto-perfil" src="" alt="Foto de perfil" class="profile-picture" />
+            <div id="foto-perfil" class="profile-picture"></div>
+            
             <p id="welcome-message"><strong>Bienvenido/a, <span id="nombre-miembro"></span></strong></p>
         </div>
-        
-        <!-- =============================================================== -->
         
         <div id="info-pago" style="display: none; text-align: left; margin: 1.5rem 0;">
             <div style="background-color: #f9f9f9; border-radius: 12px; border: 1px solid #eee; padding: 1rem; margin-top: 1rem;">
@@ -52,9 +47,6 @@
         <div id="mensaje-cargando" class="mensaje-cargando"></div>
         <div id="payment-error" style="color: red; margin-top: 10px; font-weight: bold;"></div>
 
-        <!-- =============================================================== -->
-        <!-- ==   NUEVA UBICACIÓN DEL LOGO "MMF" COMO FIRMA FINAL         == -->
-        <!-- =============================================================== -->
         <div class="footer-logo-container">
             <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="footer-logo" />
         </div>
@@ -65,19 +57,15 @@
     </div>
 
     <script>
-        // El JavaScript no cambia en absoluto, la lógica sigue siendo la misma.
-        // ... (todo tu script actual va aquí)
-        // Referencias a los elementos de la página
+        // Referencias a los elementos
         const loader = document.getElementById('loader');
         const mensajeCargando = document.getElementById('mensaje-cargando');
         const errorDiv = document.getElementById('payment-error');
         const infoPagoDiv = document.getElementById('info-pago');
         const botonPagar = document.getElementById('boton-pagar');
-        
         const profileSection = document.getElementById('profile-section');
-        const fotoPerfilImg = document.getElementById('foto-perfil');
+        const fotoPerfilDiv = document.getElementById('foto-perfil'); // Ahora es una Div
         const nombreMiembroSpan = document.getElementById('nombre-miembro');
-
         let datosMiembroGlobal = null;
         let miembroIdGlobal = null;
 
@@ -105,7 +93,10 @@
                 datosMiembroGlobal = await response.json();
                 
                 if (datosMiembroGlobal.urlFotoPerfil) {
-                    fotoPerfilImg.src = datosMiembroGlobal.urlFotoPerfil;
+                    // ===============================================================
+                    // == CAMBIO 2: Así se pone la foto como FONDO de la <div>      ==
+                    // ===============================================================
+                    fotoPerfilDiv.style.backgroundImage = `url('${datosMiembroGlobal.urlFotoPerfil}')`;
                 }
                 
                 nombreMiembroSpan.textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
@@ -124,7 +115,8 @@
                 mostrarError(error.message);
             }
         });
-
+        
+        // El resto del script para el botón de pagar y mostrar errores se mantiene igual
         botonPagar.addEventListener('click', async () => {
             if (!datosMiembroGlobal || !miembroIdGlobal) {
                 mostrarError("No se han cargado los datos para procesar el pago.");
