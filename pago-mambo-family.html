@@ -6,7 +6,6 @@
     <title>Portal de Pagos - Mi Mambo Family</title>
     
     <link rel="icon" type="image/png" href="/favicon.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,16 +17,24 @@
 
     <div class="container">
         
-        <div class="page-header">
-            <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="header-logo" />
+        <!-- =============================================================== -->
+        <!-- ==        NUEVA ESTRUCTURA DEL ENCABEZADO (TU DISEÑO)        == -->
+        <!-- =============================================================== -->
+
+        <div class="header-v3">
             <h2>Mi Mambo Family</h2>
+            <h1>Portal de Pagos</h1>
         </div>
+
+        <hr class="header-divider">
 
         <div id="profile-section" style="display: none;">
             <img id="foto-perfil" src="" alt="Foto de perfil" class="profile-picture" />
             <p id="welcome-message"><strong>Bienvenido/a, <span id="nombre-miembro"></span></strong></p>
         </div>
-
+        
+        <!-- =============================================================== -->
+        
         <div id="info-pago" style="display: none; text-align: left; margin: 1.5rem 0;">
             <div style="background-color: #f9f9f9; border-radius: 12px; border: 1px solid #eee; padding: 1rem; margin-top: 1rem;">
                 <p style="margin-bottom: 0.5rem;"><strong>Desglose de tu cuota mensual:</strong></p>
@@ -45,40 +52,50 @@
         <div id="mensaje-cargando" class="mensaje-cargando"></div>
         <div id="payment-error" style="color: red; margin-top: 10px; font-weight: bold;"></div>
 
+        <!-- =============================================================== -->
+        <!-- ==   NUEVA UBICACIÓN DEL LOGO "MMF" COMO FIRMA FINAL         == -->
+        <!-- =============================================================== -->
+        <div class="footer-logo-container">
+            <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="footer-logo" />
+        </div>
+        
         <div class="stripe-logo-container">
             <img src="Powered-by-Stripe.png" alt="Logo Stripe" class="stripe-logo">
         </div>
     </div>
 
     <script>
-        // Referencias a los elementos
+        // El JavaScript no cambia en absoluto, la lógica sigue siendo la misma.
+        // ... (todo tu script actual va aquí)
+        // Referencias a los elementos de la página
         const loader = document.getElementById('loader');
         const mensajeCargando = document.getElementById('mensaje-cargando');
         const errorDiv = document.getElementById('payment-error');
         const infoPagoDiv = document.getElementById('info-pago');
         const botonPagar = document.getElementById('boton-pagar');
         
-        // Referencias para el nuevo diseño
         const profileSection = document.getElementById('profile-section');
         const fotoPerfilImg = document.getElementById('foto-perfil');
         const nombreMiembroSpan = document.getElementById('nombre-miembro');
 
-        // "Mochila" para guardar los datos
         let datosMiembroGlobal = null;
         let miembroIdGlobal = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // ... (la lógica de carga inicial se mantiene igual)
             mensajeCargando.textContent = "Cargando tus datos de pago...";
             loader.style.display = 'block';
             mensajeCargando.style.display = 'block';
+
             const params = new URLSearchParams(window.location.search);
             miembroIdGlobal = params.get('id');
+
             if (!miembroIdGlobal) {
                 mostrarError("Enlace inválido. No se encontró el identificador del miembro.");
                 return;
             }
+
             const backendUrl = `https://stripe-backend-apprendiendo.onrender.com/api/pagos-mambo-family/datos-miembro/${miembroIdGlobal}`;
+
             try {
                 const response = await fetch(backendUrl);
                 if (!response.ok) {
@@ -87,18 +104,17 @@
                 }
                 datosMiembroGlobal = await response.json();
                 
-                // Lógica actualizada para el nuevo diseño
                 if (datosMiembroGlobal.urlFotoPerfil) {
                     fotoPerfilImg.src = datosMiembroGlobal.urlFotoPerfil;
                 }
                 
                 nombreMiembroSpan.textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
-                profileSection.style.display = 'block'; // Mostramos todo el bloque del perfil
+                profileSection.style.display = 'block';
                 
-                // ... (el resto de la lógica para rellenar los datos de pago se mantiene igual)
                 document.getElementById('total-pago').textContent = `${(datosMiembroGlobal.totalAPagar || 0).toFixed(2)} €`;
                 const desgloseHtml = `<p>Cuota Fija: ${(datosMiembroGlobal.cuotaFija || 0).toFixed(2)} €</p><p>Parte de la Sala: ${(datosMiembroGlobal.cuotaSala || 0).toFixed(2)} €</p>${(datosMiembroGlobal.penalizacion || 0) > 0 ? `<p style="color: red;"><strong>Penalización por retraso: ${datosMiembroGlobal.penalizacion.toFixed(2)} €</strong></p>` : ''}`;
                 document.getElementById('desglose-pago').innerHTML = desgloseHtml;
+                
                 loader.style.display = 'none';
                 mensajeCargando.style.display = 'none';
                 infoPagoDiv.style.display = 'block';
@@ -109,7 +125,6 @@
             }
         });
 
-        // El resto del JavaScript para el botón de pagar y mostrar errores se mantiene exactamente igual
         botonPagar.addEventListener('click', async () => {
             if (!datosMiembroGlobal || !miembroIdGlobal) {
                 mostrarError("No se han cargado los datos para procesar el pago.");
