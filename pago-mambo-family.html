@@ -20,14 +20,14 @@
         
         <div class="page-header">
             <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="header-logo" />
-            <h2>Portal de Pagos</h2>
+            <h2>Mi Mambo Family</h2>
         </div>
 
-        <div id="profile-header" style="display: none;">
+        <div id="profile-section" style="display: none;">
             <img id="foto-perfil" src="" alt="Foto de perfil" class="profile-picture" />
             <p id="welcome-message"><strong>Bienvenido/a, <span id="nombre-miembro"></span></strong></p>
         </div>
-        
+
         <div id="info-pago" style="display: none; text-align: left; margin: 1.5rem 0;">
             <div style="background-color: #f9f9f9; border-radius: 12px; border: 1px solid #eee; padding: 1rem; margin-top: 1rem;">
                 <p style="margin-bottom: 0.5rem;"><strong>Desglose de tu cuota mensual:</strong></p>
@@ -51,7 +51,7 @@
     </div>
 
     <script>
-        // Referencias a los elementos de la página
+        // Referencias a los elementos
         const loader = document.getElementById('loader');
         const mensajeCargando = document.getElementById('mensaje-cargando');
         const errorDiv = document.getElementById('payment-error');
@@ -59,7 +59,7 @@
         const botonPagar = document.getElementById('boton-pagar');
         
         // Referencias para el nuevo diseño
-        const profileHeader = document.getElementById('profile-header');
+        const profileSection = document.getElementById('profile-section');
         const fotoPerfilImg = document.getElementById('foto-perfil');
         const nombreMiembroSpan = document.getElementById('nombre-miembro');
 
@@ -68,20 +68,17 @@
         let miembroIdGlobal = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // ... (la lógica de carga inicial se mantiene igual)
             mensajeCargando.textContent = "Cargando tus datos de pago...";
             loader.style.display = 'block';
             mensajeCargando.style.display = 'block';
-
             const params = new URLSearchParams(window.location.search);
             miembroIdGlobal = params.get('id');
-
             if (!miembroIdGlobal) {
                 mostrarError("Enlace inválido. No se encontró el identificador del miembro.");
                 return;
             }
-
             const backendUrl = `https://stripe-backend-apprendiendo.onrender.com/api/pagos-mambo-family/datos-miembro/${miembroIdGlobal}`;
-
             try {
                 const response = await fetch(backendUrl);
                 if (!response.ok) {
@@ -93,16 +90,15 @@
                 // Lógica actualizada para el nuevo diseño
                 if (datosMiembroGlobal.urlFotoPerfil) {
                     fotoPerfilImg.src = datosMiembroGlobal.urlFotoPerfil;
-                    profileHeader.style.display = 'block'; // Mostramos todo el bloque del perfil
                 }
                 
                 nombreMiembroSpan.textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
+                profileSection.style.display = 'block'; // Mostramos todo el bloque del perfil
                 
-                // El resto de la lógica para rellenar datos de pago se mantiene
+                // ... (el resto de la lógica para rellenar los datos de pago se mantiene igual)
                 document.getElementById('total-pago').textContent = `${(datosMiembroGlobal.totalAPagar || 0).toFixed(2)} €`;
                 const desgloseHtml = `<p>Cuota Fija: ${(datosMiembroGlobal.cuotaFija || 0).toFixed(2)} €</p><p>Parte de la Sala: ${(datosMiembroGlobal.cuotaSala || 0).toFixed(2)} €</p>${(datosMiembroGlobal.penalizacion || 0) > 0 ? `<p style="color: red;"><strong>Penalización por retraso: ${datosMiembroGlobal.penalizacion.toFixed(2)} €</strong></p>` : ''}`;
                 document.getElementById('desglose-pago').innerHTML = desgloseHtml;
-                
                 loader.style.display = 'none';
                 mensajeCargando.style.display = 'none';
                 infoPagoDiv.style.display = 'block';
