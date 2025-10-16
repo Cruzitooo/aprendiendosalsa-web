@@ -199,7 +199,7 @@ button:disabled {
 /* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES (ACTUALIZADO) ▼▼▼ --- */
 
 .footer-logo-container {
-    margin-top: 0.8rem; /* Acercamos el logo MMF al botón */
+    margin-top: 0.4rem; /* Acercamos el logo MMF al botón */
 }
 
 .footer-logo {
