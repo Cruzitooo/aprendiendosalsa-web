@@ -1,4 +1,4 @@
-/* --- INICIO: CONTENIDO COMPLETO Y ACTUALIZADO PARA style.css (TU DISEÑO) --- */
+/* --- INICIO: CONTENIDO COMPLETO Y ACTUALIZADO PARA style.css (CON AJUSTES FINALES) --- */
 
 body {
     margin: 0;
@@ -37,43 +37,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* --- ▼▼▼ NUEVOS ESTILOS PARA EL ENCABEZADO (TU DISEÑO) ▼▼▼ --- */
-
-.header-v3 {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-/* Estilo para "Mi Mambo Family" */
-.header-v3 h2 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: #111;
-    margin: 0;
-    display: block; /* Aseguramos visibilidad */
-}
-
-/* Estilo para "Portal de Pagos" */
-.header-v3 h1 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin: 0.2rem 0 0;
-    display: block; /* Aseguramos visibilidad */
-}
-
-/* La línea divisoria */
-.header-divider {
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-}
-/* --- ▲▲▲ FIN DE NUEVOS ESTILOS PARA EL ENCABEZADO ▲▲▲ --- */
-
-
 .profile-picture {
     width: 120px;
     height: 120px;
@@ -84,26 +47,13 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#profile-section {
-    margin-bottom: 1.5rem; /* Aumentamos el espacio inferior */
-}
-
-#welcome-message {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-top: 1rem;
-    margin-bottom: 0;
-    color: #333;
-}
-
-
 p {
     margin: 0 0 1.5rem;
     color: #555;
     font-size: 0.9rem;
 }
 
-/* --- Reglas para los campos del formulario (sin cambios) --- */
+/* --- Reglas para los campos del formulario --- */
 #nombre,
 #email,
 #concepto,
@@ -143,7 +93,7 @@ p {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%2F%3E%3Cpath%20fill%3D%22%233a67f9%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233a67f9%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 0.8em top 50%;
     background-size: 0.65em auto;
@@ -190,15 +140,8 @@ button:disabled {
     margin-bottom: 0;
     color: #666;
 }
-.stripe-logo {
-    margin-top: 0.5rem;
-    width: 100px;
-    height: auto;
-    opacity: 0.5;
-    filter: grayscale(100%) brightness(0%) invert(30%);
-}
 
-/* --- BLOQUE DE AJUSTES DE COMPACTACIÓN (sin cambios) --- */
+/* --- BLOQUE DE AJUSTES DE COMPACTACIÓN --- */
 #info-pago hr {
     margin: 1.2rem 0;
 }
@@ -209,19 +152,71 @@ button:disabled {
     margin-top: 0;
 }
 
-/* --- ▼▼▼ NUEVOS ESTILOS PARA LA FIRMA FINAL Y LOGO DE STRIPE ▼▼▼ --- */
+/* --- ▼▼▼ ESTILOS PARA TU DISEÑO (V3) ▼▼▼ --- */
+
+.header-v3 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.header-v3 h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #111;
+    margin: 0;
+    display: block;
+}
+
+.header-v3 h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0.2rem 0 0;
+    display: block;
+}
+
+.header-divider {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#profile-section {
+    margin-bottom: 1.5rem;
+}
+
+#welcome-message {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    color: #333;
+}
+
+/* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES ▼▼▼ --- */
 
 .footer-logo-container {
-    margin-top: 1.5rem; /* Espacio encima del logo MMF */
+    margin-top: 1rem; /* Reduce el espacio encima del logo MMF */
 }
 
 .footer-logo {
-    width: 60px; /* Tamaño del logo MMF */
-    height: 60px;
+    width: 70px; /* Aumenta el tamaño del logo MMF */
+    height: 70px;
     border-radius: 50%;
     opacity: 0.8;
 }
 
 .stripe-logo-container {
-    margin-top: 1rem; /* Espacio encima del logo de Stripe */
+    margin-top: 0.8rem; /* Reduce el espacio encima del logo de Stripe */
+}
+
+.stripe-logo {
+    margin-top: 0.5rem;
+    width: 140px; /* Aumenta el tamaño del logo de Stripe */
+    height: auto;
+    opacity: 0.5;
+    filter: grayscale(100%) brightness(0%) invert(30%);
 }
