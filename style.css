@@ -1,4 +1,4 @@
-/* --- INICIO: CONTENIDO COMPLETO Y ACTUALIZADO PARA style.css (PROPUESTA 1) --- */
+/* --- INICIO: CONTENIDO COMPLETO Y ACTUALIZADO PARA style.css (TU DISEÑO) --- */
 
 body {
     margin: 0;
@@ -37,10 +37,42 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Ocultamos el .logo antiguo que ya no se usa en este diseño */
-.logo {
-    display: none;
+/* --- ▼▼▼ NUEVOS ESTILOS PARA EL ENCABEZADO (TU DISEÑO) ▼▼▼ --- */
+
+.header-v3 {
+    text-align: center;
+    margin-bottom: 1rem;
 }
+
+/* Estilo para "Mi Mambo Family" */
+.header-v3 h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #111;
+    margin: 0;
+    display: block; /* Aseguramos visibilidad */
+}
+
+/* Estilo para "Portal de Pagos" */
+.header-v3 h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0.2rem 0 0;
+    display: block; /* Aseguramos visibilidad */
+}
+
+/* La línea divisoria */
+.header-divider {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+/* --- ▲▲▲ FIN DE NUEVOS ESTILOS PARA EL ENCABEZADO ▲▲▲ --- */
+
 
 .profile-picture {
     width: 120px;
@@ -52,15 +84,18 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Ocultamos el H1 antiguo que ya no se usa */
-h1 {
-    display: none;
+#profile-section {
+    margin-bottom: 1.5rem; /* Aumentamos el espacio inferior */
 }
 
-/* Ocultamos el H2 antiguo, ya que ahora lo estilizamos dentro de .page-header */
-h2 {
-    display: none;
+#welcome-message {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    color: #333;
 }
+
 
 p {
     margin: 0 0 1.5rem;
@@ -108,7 +143,7 @@ p {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233a67f9%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%2F%3E%3Cpath%20fill%3D%22%233a67f9%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 0.8em top 50%;
     background-size: 0.65em auto;
@@ -173,46 +208,20 @@ button:disabled {
 #boton-pagar {
     margin-top: 0;
 }
-.stripe-logo-container {
-    margin-top: 0.8rem;
+
+/* --- ▼▼▼ NUEVOS ESTILOS PARA LA FIRMA FINAL Y LOGO DE STRIPE ▼▼▼ --- */
+
+.footer-logo-container {
+    margin-top: 1.5rem; /* Espacio encima del logo MMF */
 }
 
-/* --- ▼▼▼ NUEVO BLOQUE DE ESTILOS PARA LA PROPUESTA 1 ▼▼▼ --- */
-
-.page-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px; /* Espacio entre el logo y el texto */
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.header-logo {
-    width: 60px;
+.footer-logo {
+    width: 60px; /* Tamaño del logo MMF */
     height: 60px;
     border-radius: 50%;
+    opacity: 0.8;
 }
 
-/* Estilo para el título "Mi Mambo Family" en el encabezado */
-.page-header h2 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: #111;
-    margin: 0;
-    display: block; /* Aseguramos que sea visible */
-}
-
-#profile-section {
-    margin-bottom: 1rem;
-}
-
-/* Mensaje de bienvenida que va debajo de la foto */
-#welcome-message {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-top: 1rem;
-    margin-bottom: 0;
-    color: #333;
+.stripe-logo-container {
+    margin-top: 1rem; /* Espacio encima del logo de Stripe */
 }
