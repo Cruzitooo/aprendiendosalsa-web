@@ -210,7 +210,7 @@ button:disabled {
 }
 
 .stripe-logo-container {
-    margin-top: -6rem; /* Este tira de la caja de Stripe hacia arriba */
+    margin-top: -4rem; /* Este tira de la caja de Stripe hacia arriba */
 }
 
 .stripe-logo {
