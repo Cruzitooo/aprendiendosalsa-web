@@ -52,7 +52,7 @@ body {
     /* --- 3. CONTROL NUMÉRICO DE LA POSICIÓN (X Y) --- */
     /* X: 0% (izquierda) a 100% (derecha). 50% es el centro. */
     /* Y: 0% (arriba) a 100% (abajo). 50% es el centro. */
-    background-position: 50% 30%; /* EJEMPLO: Centrado horizontalmente y enfocado un poco hacia arriba. */
+    background-position: 50% 10%; /* EJEMPLO: Centrado horizontalmente y enfocado un poco hacia arriba. */
 
     /* --- Estilos fijos (normalmente no se tocan) --- */
     border-radius: 50%;
