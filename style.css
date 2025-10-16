@@ -214,7 +214,7 @@ button:disabled {
 }
 
 .stripe-logo {
-    margin-top: 0; /* <-- ¡AQUÍ ESTÁ EL CAMBIO! Quitamos el margen que empujaba hacia abajo */
+    margin-top: -2; /* <-- ¡AQUÍ ESTÁ EL CAMBIO! Quitamos el margen que empujaba hacia abajo */
     width: 160px;
     height: auto;
     opacity: 0.5;
