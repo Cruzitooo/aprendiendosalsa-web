@@ -46,35 +46,30 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* --- ▼▼▼ CÓDIGO AÑADIDO PARA LA FOTO DE PERFIL ▼▼▼ --- */
-/* Estilo para la foto de perfil en el portal de pagos */
 .profile-picture {
     width: 120px;
     height: 120px;
-    border-radius: 50%; /* Esto es lo que la hace redonda */
-    object-fit: cover;    /* Esto asegura que la foto se ajuste sin deformarse (recorta los bordes si es necesario) */
+    border-radius: 50%;
+    object-fit: cover;
     margin-bottom: 1rem;
     border: 4px solid #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-/* --- ▲▲▲ FIN DEL CÓDIGO AÑADIDO ▲▲▲ --- */
 
-
+/* --- ▼▼▼ MODIFICACIONES PARA EL NUEVO DISEÑO ▼▼▼ --- */
 h1 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin: 0.5rem 0 0.2rem;
+    display: none; /* Ocultamos el H1 "Portal de Pagos" que ya no se usa */
 }
 
 h2 {
-    font-size: 2rem;
+    font-size: 2rem; /* Este es para el H2 "Mi Mambo Family" que ya no se usa */
     font-weight: 900;
     color: #111;
     margin: 0 0 1.5rem;
+    display: none; /* Lo ocultamos también */
 }
+/* --- ▲▲▲ FIN DE LAS MODIFICACIONES ▲▲▲ --- */
+
 
 p {
     margin: 0 0 1.5rem;
@@ -177,24 +172,56 @@ button:disabled {
     filter: grayscale(100%) brightness(0%) invert(30%);
 }
 
-/* --- ▼▼▼ NUEVO BLOQUE DE AJUSTES DE COMPACTACIÓN ▼▼▼ --- */
-
-/* 1. Reduce el espacio de la línea horizontal */
+/* --- ▼▼▼ BLOQUE DE AJUSTES DE COMPACTACIÓN ▼▼▼ --- */
 #info-pago hr {
     margin: 1.2rem 0;
 }
-
-/* 2. Reduce el espacio DEBAJO del "Total a Pagar" */
 .total-line {
-    margin-bottom: 1rem; /* Reduce el margen inferior */
+    margin-bottom: 1rem;
 }
-
-/* 3. Ajusta el espacio ENCIMA del botón */
 #boton-pagar {
-    margin-top: 0; /* Elimina el margen superior del botón */
+    margin-top: 0;
 }
-
-/* 4. Ajusta el espacio del contenedor del logo de Stripe */
 .stripe-logo-container {
     margin-top: 0.8rem;
+}
+
+
+/* --- ▼▼▼ NUEVO BLOQUE DE ESTILOS PARA EL REDISEÑO ▼▼▼ --- */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espacio entre el logo y el texto */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.header-logo {
+    width: 40px;  /* Hacemos el logo del header más pequeño */
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Estilo para el nuevo título "Portal de Pagos" */
+.page-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    display: block; /* Aseguramos que sea visible */
+}
+
+#profile-header {
+    margin-bottom: 1rem;
+}
+
+/* Mensaje de bienvenida que va debajo de la foto */
+#welcome-message {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    color: #333;
 }
