@@ -152,7 +152,7 @@ button:disabled {
     margin-top: 0;
 }
 
-/* --- ▼▼▼ ESTILOS PARA TU DISEÑO (V3) ▼▼▼ --- */
+/* --- ESTILOS PARA TU DISEÑO (V3) --- */
 
 .header-v3 {
     text-align: center;
@@ -196,26 +196,26 @@ button:disabled {
     color: #333;
 }
 
-/* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES ▼▼▼ --- */
+/* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES (ACTUALIZADO) ▼▼▼ --- */
 
 .footer-logo-container {
-    margin-top: 1rem; /* Reduce el espacio encima del logo MMF */
+    margin-top: 0.8rem; /* Acercamos el logo MMF al botón */
 }
 
 .footer-logo {
-    width: 70px; /* Aumenta el tamaño del logo MMF */
-    height: 70px;
+    width: 80px; /* Hacemos el logo MMF un 15% más grande */
+    height: 80px;
     border-radius: 50%;
     opacity: 0.8;
 }
 
 .stripe-logo-container {
-    margin-top: 0.8rem; /* Reduce el espacio encima del logo de Stripe */
+    margin-top: 0.5rem; /* Acercamos el logo de Stripe al de MMF */
 }
 
 .stripe-logo {
     margin-top: 0.5rem;
-    width: 140px; /* Aumenta el tamaño del logo de Stripe */
+    width: 160px; /* Hacemos el logo de Stripe un 15% más grande */
     height: auto;
     opacity: 0.5;
     filter: grayscale(100%) brightness(0%) invert(30%);
