@@ -18,6 +18,9 @@
 
     <div class="container">
         <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="logo" />
+
+        <img id="foto-perfil" src="" alt="Foto de perfil" class="profile-picture" style="display: none;" />
+        
         <h1>Portal de Pagos</h1>
         <h2>Mi Mambo Family</h2>
 
@@ -54,19 +57,20 @@
         const errorDiv = document.getElementById('payment-error');
         const infoPagoDiv = document.getElementById('info-pago');
         const botonPagar = document.getElementById('boton-pagar');
+        // --- Referencia a la nueva imagen de perfil ---
+        const fotoPerfilImg = document.getElementById('foto-perfil');
 
-        // "Mochila" para guardar los datos del miembro y usarlos en el botón
+        // "Mochila" para guardar los datos
         let datosMiembroGlobal = null;
         let miembroIdGlobal = null;
 
-        // Función que se ejecuta cuando la página carga
         document.addEventListener('DOMContentLoaded', async () => {
             mensajeCargando.textContent = "Cargando tus datos de pago...";
             loader.style.display = 'block';
             mensajeCargando.style.display = 'block';
 
             const params = new URLSearchParams(window.location.search);
-            miembroIdGlobal = params.get('id'); // Guardamos el ID en la "mochila"
+            miembroIdGlobal = params.get('id');
 
             if (!miembroIdGlobal) {
                 mostrarError("Enlace inválido. No se encontró el identificador del miembro.");
@@ -81,9 +85,18 @@
                     const errorData = await response.json().catch(() => ({}));
                     throw new Error(errorData.error || `Error del servidor: ${response.status}`);
                 }
-                datosMiembroGlobal = await response.json(); // Guardamos todos los datos en la "mochila"
+                datosMiembroGlobal = await response.json();
                 
-                // Rellenamos la página con los datos
+                // ===============================================================
+                // == CAMBIO 2: LA LÓGICA PARA MOSTRAR LA FOTO                ==
+                // ===============================================================
+                // Si el servidor nos ha enviado una URL para la foto...
+                if (datosMiembroGlobal.urlFotoPerfil) {
+                    fotoPerfilImg.src = datosMiembroGlobal.urlFotoPerfil; // ...la ponemos en la imagen...
+                    fotoPerfilImg.style.display = 'block';                  // ...y la hacemos visible.
+                }
+
+                // Rellenamos el resto de la página
                 document.getElementById('nombre-miembro').textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
                 document.getElementById('total-pago').textContent = `${(datosMiembroGlobal.totalAPagar || 0).toFixed(2)} €`;
                 
@@ -100,47 +113,40 @@
             }
         });
 
-        // --- ¡NUEVA LÓGICA PARA EL BOTÓN DE PAGO! ---
         botonPagar.addEventListener('click', async () => {
+            // ... (El resto del código del botón de pago se mantiene igual)
             if (!datosMiembroGlobal || !miembroIdGlobal) {
                 mostrarError("No se han cargado los datos para procesar el pago.");
                 return;
             }
-
             mensajeCargando.textContent = "Generando tu enlace de pago seguro...";
             loader.style.display = 'block';
             mensajeCargando.style.display = 'block';
             botonPagar.disabled = true;
             errorDiv.textContent = '';
-
-            // Preparamos el "paquete con etiquetas" para el servidor
             const datosParaBackend = {
                 concepto: `Cuota Mensual Compañía - ${datosMiembroGlobal.nombreMiembro}`,
                 importe: datosMiembroGlobal.totalAPagar,
                 email: datosMiembroGlobal.emailMiembro,
                 metadata: {
-                    tipoPago: 'cuota_mensual_compania', // Etiqueta clave para el webhook
+                    tipoPago: 'cuota_mensual_compania',
                     miembroId: miembroIdGlobal,
                     mes: new Date().toLocaleString('es-ES', { month: 'long', year: 'numeric' })
                 }
             };
-
             try {
-                // Llamamos al endpoint genérico para crear enlaces de Stripe
                 const response = await fetch('https://stripe-backend-apprendiendo.onrender.com/crear-enlace', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosParaBackend)
                 });
-
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
                     throw new Error(errorData.error || `Error ${response.status}`);
                 }
-
                 const data = await response.json();
                 if (data.url) {
-                    window.location.href = data.url; // Redirigimos a Stripe
+                    window.location.href = data.url;
                 } else {
                     throw new Error('El servidor no devolvió una URL de pago.');
                 }
@@ -152,7 +158,7 @@
         function mostrarError(mensaje) {
             loader.style.display = 'none';
             mensajeCargando.style.display = 'none';
-            botonPagar.disabled = false; // Re-habilitamos el botón si hay un error
+            botonPagar.disabled = false;
             errorDiv.textContent = `Error: ${mensaje}`;
             infoPagoDiv.style.display = 'block';
         }
