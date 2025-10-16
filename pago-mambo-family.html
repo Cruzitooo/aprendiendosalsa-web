@@ -17,26 +17,26 @@
     <div class="background-image"></div>
 
     <div class="container">
-        <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="logo" />
-
-        <img id="foto-perfil" src="" alt="Foto de perfil" class="profile-picture" style="display: none;" />
         
-        <h1>Portal de Pagos</h1>
-        <h2>Mi Mambo Family</h2>
+        <div class="page-header">
+            <img src="logo-mambo-family.png" alt="Logo Mi Mambo Family" class="header-logo" />
+            <h2>Portal de Pagos</h2>
+        </div>
 
+        <div id="profile-header" style="display: none;">
+            <img id="foto-perfil" src="" alt="Foto de perfil" class="profile-picture" />
+            <p id="welcome-message"><strong>Bienvenido/a, <span id="nombre-miembro"></span></strong></p>
+        </div>
+        
         <div id="info-pago" style="display: none; text-align: left; margin: 1.5rem 0;">
-            <p style="font-size: 1.1rem;"><strong>Bienvenido/a, <span id="nombre-miembro"></span></strong></p>
-            
             <div style="background-color: #f9f9f9; border-radius: 12px; border: 1px solid #eee; padding: 1rem; margin-top: 1rem;">
                 <p style="margin-bottom: 0.5rem;"><strong>Desglose de tu cuota mensual:</strong></p>
-                <div id="desglose-pago" style="padding-left: 1rem;">
-                </div>
+                <div id="desglose-pago" style="padding-left: 1rem;"></div>
             </div>
             
             <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
             
             <p class="total-line" style="font-size: 1.3rem; font-weight: bold; text-align: right;">Total a Pagar: <span id="total-pago" style="color: #3a67f9;">--.-- €</span></p>
-
         </div>
         
         <button type="button" id="boton-pagar" disabled>Pagar con Tarjeta</button>
@@ -57,8 +57,11 @@
         const errorDiv = document.getElementById('payment-error');
         const infoPagoDiv = document.getElementById('info-pago');
         const botonPagar = document.getElementById('boton-pagar');
-        // --- Referencia a la nueva imagen de perfil ---
+        
+        // Referencias para el nuevo diseño
+        const profileHeader = document.getElementById('profile-header');
         const fotoPerfilImg = document.getElementById('foto-perfil');
+        const nombreMiembroSpan = document.getElementById('nombre-miembro');
 
         // "Mochila" para guardar los datos
         let datosMiembroGlobal = null;
@@ -87,19 +90,16 @@
                 }
                 datosMiembroGlobal = await response.json();
                 
-                // ===============================================================
-                // == CAMBIO 2: LA LÓGICA PARA MOSTRAR LA FOTO                ==
-                // ===============================================================
-                // Si el servidor nos ha enviado una URL para la foto...
+                // Lógica actualizada para el nuevo diseño
                 if (datosMiembroGlobal.urlFotoPerfil) {
-                    fotoPerfilImg.src = datosMiembroGlobal.urlFotoPerfil; // ...la ponemos en la imagen...
-                    fotoPerfilImg.style.display = 'block';                  // ...y la hacemos visible.
+                    fotoPerfilImg.src = datosMiembroGlobal.urlFotoPerfil;
+                    profileHeader.style.display = 'block'; // Mostramos todo el bloque del perfil
                 }
-
-                // Rellenamos el resto de la página
-                document.getElementById('nombre-miembro').textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
-                document.getElementById('total-pago').textContent = `${(datosMiembroGlobal.totalAPagar || 0).toFixed(2)} €`;
                 
+                nombreMiembroSpan.textContent = datosMiembroGlobal.nombreMiembro || "Miembro";
+                
+                // El resto de la lógica para rellenar datos de pago se mantiene
+                document.getElementById('total-pago').textContent = `${(datosMiembroGlobal.totalAPagar || 0).toFixed(2)} €`;
                 const desgloseHtml = `<p>Cuota Fija: ${(datosMiembroGlobal.cuotaFija || 0).toFixed(2)} €</p><p>Parte de la Sala: ${(datosMiembroGlobal.cuotaSala || 0).toFixed(2)} €</p>${(datosMiembroGlobal.penalizacion || 0) > 0 ? `<p style="color: red;"><strong>Penalización por retraso: ${datosMiembroGlobal.penalizacion.toFixed(2)} €</strong></p>` : ''}`;
                 document.getElementById('desglose-pago').innerHTML = desgloseHtml;
                 
@@ -113,8 +113,8 @@
             }
         });
 
+        // El resto del JavaScript para el botón de pagar y mostrar errores se mantiene exactamente igual
         botonPagar.addEventListener('click', async () => {
-            // ... (El resto del código del botón de pago se mantiene igual)
             if (!datosMiembroGlobal || !miembroIdGlobal) {
                 mostrarError("No se han cargado los datos para procesar el pago.");
                 return;
