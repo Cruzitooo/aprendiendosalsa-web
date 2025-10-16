@@ -196,26 +196,26 @@ button:disabled {
     color: #333;
 }
 
-/* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES (ACTUALIZADO) ▼▼▼ --- */
+/* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES (CORREGIDO) ▼▼▼ --- */
 
 .footer-logo-container {
-    margin-top: 0.4rem; /* Acercamos el logo MMF al botón */
+    margin-top: 0.4rem; /* Este controla el espacio sobre MMF */
 }
 
 .footer-logo {
-    width: 80px; /* Hacemos el logo MMF un 15% más grande */
+    width: 80px;
     height: 80px;
     border-radius: 50%;
     opacity: 0.8;
 }
 
 .stripe-logo-container {
-    margin-top: -0.2rem; /* Acercamos el logo de Stripe al de MMF */
+    margin-top: -0.2rem; /* Este tira de la caja de Stripe hacia arriba */
 }
 
 .stripe-logo {
-    margin-top: 0.5rem;
-    width: 160px; /* Hacemos el logo de Stripe un 15% más grande */
+    margin-top: 0; /* <-- ¡AQUÍ ESTÁ EL CAMBIO! Quitamos el margen que empujaba hacia abajo */
+    width: 160px;
     height: auto;
     opacity: 0.5;
     filter: grayscale(100%) brightness(0%) invert(30%);
