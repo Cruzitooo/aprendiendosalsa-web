@@ -1,4 +1,4 @@
-/* --- INICIO: CONTENIDO COMPLETO Y ACTUALIZADO PARA style.css --- */
+/* --- INICIO: CONTENIDO COMPLETO Y ACTUALIZADO PARA style.css (PROPUESTA 1) --- */
 
 body {
     margin: 0;
@@ -37,13 +37,9 @@ body {
     margin-bottom: 2rem;
 }
 
+/* Ocultamos el .logo antiguo que ya no se usa en este diseño */
 .logo {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
 }
 
 .profile-picture {
@@ -56,20 +52,15 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* --- ▼▼▼ MODIFICACIONES PARA EL NUEVO DISEÑO ▼▼▼ --- */
+/* Ocultamos el H1 antiguo que ya no se usa */
 h1 {
-    display: none; /* Ocultamos el H1 "Portal de Pagos" que ya no se usa */
+    display: none;
 }
 
+/* Ocultamos el H2 antiguo, ya que ahora lo estilizamos dentro de .page-header */
 h2 {
-    font-size: 2rem; /* Este es para el H2 "Mi Mambo Family" que ya no se usa */
-    font-weight: 900;
-    color: #111;
-    margin: 0 0 1.5rem;
-    display: none; /* Lo ocultamos también */
+    display: none;
 }
-/* --- ▲▲▲ FIN DE LAS MODIFICACIONES ▲▲▲ --- */
-
 
 p {
     margin: 0 0 1.5rem;
@@ -77,7 +68,7 @@ p {
     font-size: 0.9rem;
 }
 
-/* --- Reglas para los campos del formulario --- */
+/* --- Reglas para los campos del formulario (sin cambios) --- */
 #nombre,
 #email,
 #concepto,
@@ -172,7 +163,7 @@ button:disabled {
     filter: grayscale(100%) brightness(0%) invert(30%);
 }
 
-/* --- ▼▼▼ BLOQUE DE AJUSTES DE COMPACTACIÓN ▼▼▼ --- */
+/* --- BLOQUE DE AJUSTES DE COMPACTACIÓN (sin cambios) --- */
 #info-pago hr {
     margin: 1.2rem 0;
 }
@@ -186,41 +177,41 @@ button:disabled {
     margin-top: 0.8rem;
 }
 
-
-/* --- ▼▼▼ NUEVO BLOQUE DE ESTILOS PARA EL REDISEÑO ▼▼▼ --- */
+/* --- ▼▼▼ NUEVO BLOQUE DE ESTILOS PARA LA PROPUESTA 1 ▼▼▼ --- */
 
 .page-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Espacio entre el logo y el texto */
-    border-bottom: 1px solid #eee;
-    padding-bottom: 1rem;
+    gap: 15px; /* Espacio entre el logo y el texto */
+    padding-bottom: 1.5rem;
     margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .header-logo {
-    width: 40px;  /* Hacemos el logo del header más pequeño */
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
 }
 
-/* Estilo para el nuevo título "Portal de Pagos" */
+/* Estilo para el título "Mi Mambo Family" en el encabezado */
 .page-header h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #333;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #111;
     margin: 0;
     display: block; /* Aseguramos que sea visible */
 }
 
-#profile-header {
+#profile-section {
     margin-bottom: 1rem;
 }
 
 /* Mensaje de bienvenida que va debajo de la foto */
 #welcome-message {
     font-size: 1.2rem;
+    font-weight: 500;
     margin-top: 1rem;
     margin-bottom: 0;
     color: #333;
