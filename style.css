@@ -42,29 +42,26 @@ body {
 
     /* --- 1. CONTROL DEL TAMAÑO DEL CÍRCULO --- */
     /* Cambia estos dos valores (siempre iguales) para hacer el CÍRCULO más grande o pequeño. */
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
 
     /* --- 2. CONTROL DEL ZOOM DE LA IMAGEN --- */
     /* Aumenta el porcentaje para más zoom (la cara se ve más grande). */
-    /* Redúcelo para menos zoom (se ve más fondo). */
     background-size: 150%;
 
-    /* --- 3. CONTROL DE LA POSICIÓN DE LA IMAGEN (PARA MOVERLA) --- */
-    /* El primer valor mueve la foto de izquierda a derecha (X). */
-    /* El segundo valor mueve la foto de arriba a abajo (Y). */
-    /* Puedes usar palabras (center, top, bottom) o porcentajes (%) para más precisión. */
-    background-position: center top; /* 'center top' es lo mismo que '50% 0%' */
+    /* --- 3. CONTROL NUMÉRICO DE LA POSICIÓN (X Y) --- */
+    /* X: 0% (izquierda) a 100% (derecha). 50% es el centro. */
+    /* Y: 0% (arriba) a 100% (abajo). 50% es el centro. */
+    background-position: 50% 20%; /* EJEMPLO: Centrado horizontalmente y enfocado un poco hacia arriba. */
 
     /* --- Estilos fijos (normalmente no se tocan) --- */
     border-radius: 50%;
-    margin: 0 auto 1.0rem auto;
+    margin: 0 auto 1.5rem auto;
     border: 4px solid #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     background-repeat: no-repeat;
 }
 /* --- ▲▲▲ FIN DEL PANEL DE CONTROL ▲▲▲ --- */
-
 
 p {
     margin: 0 0 1.5rem;
