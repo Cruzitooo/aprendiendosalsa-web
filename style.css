@@ -199,7 +199,7 @@ button:disabled {
 /* --- ▼▼▼ AJUSTES FINALES PARA LOGOS INFERIORES (CORREGIDO) ▼▼▼ --- */
 
 .footer-logo-container {
-    margin-top: 0.4rem; /* Este controla el espacio sobre MMF */
+    margin-top: -1rem; /* Este controla el espacio sobre MMF */
 }
 
 .footer-logo {
