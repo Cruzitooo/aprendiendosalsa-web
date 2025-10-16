@@ -47,7 +47,7 @@ body {
 
     /* --- 2. CONTROL DEL ZOOM DE LA IMAGEN --- */
     /* Aumenta el porcentaje para más zoom (la cara se ve más grande). */
-    background-size: 150%;
+    background-size: 140%;
 
     /* --- 3. CONTROL NUMÉRICO DE LA POSICIÓN (X Y) --- */
     /* X: 0% (izquierda) a 100% (derecha). 50% es el centro. */
