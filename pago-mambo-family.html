@@ -123,13 +123,25 @@
             // 2. Rellenar Bloque 1: Deuda Mensual (obligatoria)
             const mensualContainer = document.getElementById('bloque-mensual');
             if (datos.deudaMensual && datos.deudaMensual.importe > 0) {
+                
+                // --- ▼▼▼ ¡AQUÍ ESTÁ EL CAMBIO! ▼▼▼ ---
+                // Le ponemos la "etiqueta" roja a la penalización
+                let desgloseHtml = datos.deudaMensual.desglose;
+                if (desgloseHtml.includes("Penalización")) {
+                    desgloseHtml = desgloseHtml.replace(
+                        /(\+ Penalización: [0-9,.]*€)/,
+                        `<span class="item-penalizacion">$1</span>`
+                    );
+                }
+                // --- ▲▲▲ FIN DEL CAMBIO ▲▲▲ ---
+
                 mensualContainer.innerHTML = `
                     <h3 class="block-title">Cuota Mensual</h3>
                     <div class="payment-item">
                         <input type="checkbox" id="item-${datos.deudaMensual.id}" data-id="${datos.deudaMensual.id}" data-type="cuota" data-importe="${datos.deudaMensual.importe}" checked disabled>
                         <label for="item-${datos.deudaMensual.id}">
                             <strong>${datos.deudaMensual.concepto}: ${datos.deudaMensual.importe.toFixed(2)} €</strong>
-                            <span class="item-desglose">${datos.deudaMensual.desglose}</span>
+                            <span class="item-desglose">${desgloseHtml}</span>
                         </label>
                     </div>
                 `;
@@ -153,7 +165,7 @@
             const listaMultas = document.getElementById('lista-multas');
             if (datos.multasPendientes && datos.multasPendientes.length > 0) {
                 listaMultas.innerHTML = datos.multasPendientes.map(item => `
-                    <div class="payment-item">
+                    <div class="payment-item item-penalizacion">
                         <input type="checkbox" id="item-${item.id}" data-id="${item.id}" data-type="multa" data-importe="${item.importe}">
                         <label for="item-${item.id}">${item.concepto}: ${item.importe.toFixed(2)} €</label>
                     </div>
@@ -183,7 +195,7 @@
             botonPagar.disabled = total === 0;
         }
 
-        // --- Lógica del Botón de Pagar (actualizada para el nuevo sistema) ---
+        // --- Lógica del Botón de Pagar (sin cambios) ---
         botonPagar.addEventListener('click', async () => {
             mensajeCargando.textContent = "Generando tu enlace de pago seguro...";
             loader.style.display = 'block';
@@ -218,7 +230,6 @@
             };
             
             try {
-                // ... (la lógica de fetch para crear el enlace se mantiene igual)
                 const response = await fetch('https://stripe-backend-apprendiendo.onrender.com/crear-enlace', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -247,3 +258,4 @@
     </script>
 </body>
 </html>
+
