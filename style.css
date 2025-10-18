@@ -10,7 +10,7 @@ body {
     justify-content: center;
     background: #000;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden; /* Evita scroll horizontal en móviles */
 }
 
 .background-image {
@@ -238,31 +238,113 @@ button:disabled {
 }
 
 
-/* --- ▼▼▼ BLOQUE AÑADIDO PARA EL SPINNER DE CARGA ▼▼▼ --- */
+/* --- BLOQUE PARA EL SPINNER DE CARGA --- */
 
-/* Estilos para el texto que acompaña al spinner */
 .mensaje-cargando {
     color: #555;
     font-weight: 500;
     margin-top: 1rem;
-    display: none; /* También oculto por defecto */
+    display: none;
 }
 
-/* El spinner animado */
 .loader {
-  border: 5px solid #e0e0e0; /* El color del círculo de fondo, más claro */
-  border-top: 5px solid #3a67f9; /* El color azul que se mueve */
+  border: 5px solid #e0e0e0;
+  border-top: 5px solid #3a67f9;
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  animation: spin 1s linear infinite; /* La animación que lo hace girar */
-  margin: 2rem auto 0; /* Lo centra y le da espacio arriba */
-  display: none; /* ¡LA CLAVE! Por defecto, está apagado (oculto) */
+  animation: spin 1s linear infinite;
+  margin: 2rem auto 0;
+  display: none;
 }
 
-/* La animación que define el giro */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-/* --- ▲▲▲ FIN DEL BLOQUE AÑADIDO ▲▲▲ --- */
+
+/* --- ▼▼▼ BLOQUE AÑADIDO PARA ESTILOS DEL PORTAL INTERACTIVO ▼▼▼ --- */
+
+.block-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.payment-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.payment-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    accent-color: #3a67f9; /* Checkbox azul por defecto */
+}
+
+.payment-item label {
+    font-size: 1rem;
+    color: #444;
+}
+
+.item-desglose {
+    display: block;
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 2px;
+}
+
+/* Estilo para las penalizaciones en rojo */
+.item-penalizacion, .item-penalizacion strong {
+    color: #D32F2F !important; /* Rojo oscuro para que sea legible */
+    font-weight: bold;
+}
+.payment-item.item-penalizacion input[type="checkbox"] {
+    accent-color: #D32F2F; /* El checkbox de la multa también será rojo */
+}
+
+
+/* --- ▼▼▼ BLOQUE AÑADIDO PARA DISEÑO RESPONSIVO (MÓVILES) ▼▼▼ --- */
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 1.5rem 1.25rem;
+    }
+
+    .header-v3 h2 {
+        font-size: 1.8rem; /* Título principal más pequeño */
+    }
+
+    .header-v3 h1 {
+        font-size: 0.9rem; /* Subtítulo más pequeño */
+    }
+
+    .profile-picture {
+        width: 100px;
+        height: 100px;
+    }
+
+    #welcome-message {
+        font-size: 1.1rem;
+    }
+    
+    .payment-item label {
+        font-size: 0.95rem; /* Letra de los ítems un poco más pequeña */
+    }
+
+    .total-line {
+        font-size: 1.2rem !important; /* Usamos !important para asegurar que se aplique */
+    }
+
+    button {
+        width: 100%; /* El botón ocupa todo el ancho */
+    }
+}
+
